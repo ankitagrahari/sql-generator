@@ -8,10 +8,10 @@ An interactive web application that converts natural language into SQL queries u
 
 ## Author
 
-| | |
-|---|---|
-| **Handle** | backendbrilliance |
-| **Organization** | EPAM |
+| |                                                              |
+|---|--------------------------------------------------------------|
+| **Handle** | aagrahari                                                    |
+| **Organization** | EPAM                                                         |
 | **Website** | [dynamicallyblunttech.com](https://dynamicallyblunttech.com) |
 
 
@@ -35,7 +35,7 @@ An interactive web application that converts natural language into SQL queries u
 > No Python. No code. Just Docker.
 
 ```bash
-docker run -d -p 5000:5000 --name sql-gen backendbrilliance/sql-generator:latest
+docker run -d -p 5000:5000 --name sql-gen aagrahari/sql-generator:latest
 ```
 
 Then open **http://localhost:5000** in your browser.
@@ -46,7 +46,7 @@ docker run -d -p 5000:5000 \
   -e OPENAI_API_KEY=sk-... \
   -e FLASK_SECRET_KEY=your-random-secret \
   --name sql-gen \
-  backendbrilliance/sql-generator:latest
+  aagrahari/sql-generator:latest
 ```
 
 **Persist uploaded ERDs across restarts:**
@@ -56,7 +56,7 @@ docker run -d -p 5000:5000 \
   -e FLASK_SECRET_KEY=your-random-secret \
   -v ./uploads:/app/uploads \
   --name sql-gen \
-  backendbrilliance/sql-generator:latest
+  aagrahari/sql-generator:latest
 ```
 
 **Useful commands:**
@@ -65,7 +65,7 @@ docker stop sql-gen          # Stop the container
 docker start sql-gen         # Restart it (data preserved)
 docker logs sql-gen          # View logs
 docker rm -f sql-gen         # Remove container
-docker pull backendbrilliance/sql-generator:latest  # Get latest version
+docker pull aagrahari/sql-generator:latest  # Get latest version
 ```
 
 ---
@@ -81,23 +81,23 @@ Follow these steps to build and push an updated image.
 docker login
 
 # 2. Build with your Docker Hub username as prefix
-docker build -t backendbrilliance/sql-generator:latest .
+docker build -t aagrahari/sql-generator:latest .
 
 # 3. (Optional) Tag a versioned release
-docker tag backendbrilliance/sql-generator:latest backendbrilliance/sql-generator:1.0
+docker tag aagrahari/sql-generator:latest aagrahari/sql-generator:1.0
 
 # 4. Push to Docker Hub
-docker push backendbrilliance/sql-generator:latest
-docker push backendbrilliance/sql-generator:1.0
+docker push aagrahari/sql-generator:latest
+docker push aagrahari/sql-generator:1.0
 ```
 
 Image is then publicly available at:
-`https://hub.docker.com/r/backendbrilliance/sql-generator`
+`https://hub.docker.com/r/aagrahari/sql-generator`
 
 **To publish an update:**
 ```bash
-docker build -t backendbrilliance/sql-generator:latest .
-docker push backendbrilliance/sql-generator:latest
+docker build -t aagrahari/sql-generator:latest .
+docker push aagrahari/sql-generator:latest
 ```
 
 ---
@@ -204,22 +204,22 @@ Open **http://localhost:5000** in your browser.
 docker build -t sql-generator .
 
 # Run (no API key pre-configured — enter in UI settings)
-docker run -p 5000:5000 sql-generator
+docker run -p 5001:5001 sql-generator
 
 # Run with API keys pre-configured
-docker run -p 5000:5000 \
+docker run -p 5001:5001 \
   -e OPENAI_API_KEY=sk-... \
   -e FLASK_SECRET_KEY=my-random-secret \
   sql-generator
 
 # Persist uploaded ERDs across container restarts
-docker run -p 5000:5000 \
+docker run -p 5001:5001 \
   -v $(pwd)/uploads:/app/uploads \
   -e OPENAI_API_KEY=sk-... \
   sql-generator
 ```
 
-Open **http://localhost:5000** in your browser.
+Open **http://localhost:5001** in your browser.
 
 ---
 
