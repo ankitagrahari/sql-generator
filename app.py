@@ -184,7 +184,7 @@ def reset_erd():
 PROVIDERS = {
     "openai": {"base_url": None,                                    "needs_key": True},
     "github": {"base_url": "https://models.inference.ai.azure.com", "needs_key": True},
-    "ollama": {"base_url": "http://localhost:11434/",               "needs_key": False},
+    "ollama": {"base_url": "http://host.docker.internal:port:11434/",               "needs_key": False},
 }
 
 
