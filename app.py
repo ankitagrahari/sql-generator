@@ -184,7 +184,7 @@ def reset_erd():
 PROVIDERS = {
     "openai": {"base_url": None,                                    "needs_key": True},
     "github": {"base_url": "https://models.inference.ai.azure.com", "needs_key": True},
-    "ollama": {"base_url": "http://localhost:11434/",              "needs_key": False},
+    "ollama": {"base_url": "http://localhost:11434/",               "needs_key": False},
 }
 
 
@@ -241,6 +241,11 @@ RULES:
         if resolved_baseurl:
             kwargs["base_url"] = resolved_baseurl
 
+        print(f"--- API Request Log ---")
+        print(f"Provider Requested: {provider}")
+        print(f"Resolved Base URL Used: {resolved_baseurl}")
+        print(f"Prompt: {prompt[:50]}...")
+        print(f"-----------------------")
         resp = OpenAI(**kwargs).chat.completions.create(
             model=model,
             messages=[
@@ -280,5 +285,5 @@ RULES:
 
 if __name__ == "__main__":
     debug = os.getenv("FLASK_DEBUG", "true").lower() == "true"
-    print("🚀  SQL Generator  →  http://localhost:5000")
-    app.run(host="0.0.0.0", port=5000, debug=debug)
+    print("🚀  SQL Generator  →  http://localhost:5001")
+    app.run(host="0.0.0.0", port=5001, debug=debug)
