@@ -1,0 +1,2639 @@
+tables:
+  action_text_rich_texts:
+    name: action_text_rich_texts
+    indexes:
+      index_action_text_rich_texts_uniqueness:
+        name: index_action_text_rich_texts_uniqueness
+        unique: true
+        columns:
+          - record_type
+          - record_id
+          - name
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      body:
+        name: body
+        type: text
+        notNull: false
+      record_type:
+        name: record_type
+        type: varchar
+        notNull: true
+      record_id:
+        name: record_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_record_type_record_id_name:
+        type: UNIQUE
+        name: UNIQUE_record_type_record_id_name
+        columnNames:
+          - record_type
+          - record_id
+          - name
+  active_storage_attachments:
+    name: active_storage_attachments
+    indexes:
+      index_active_storage_attachments_on_blob_id:
+        name: index_active_storage_attachments_on_blob_id
+        unique: false
+        columns:
+          - blob_id
+        type: ""
+      index_active_storage_attachments_uniqueness:
+        name: index_active_storage_attachments_uniqueness
+        unique: true
+        columns:
+          - record_type
+          - record_id
+          - name
+          - blob_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      record_type:
+        name: record_type
+        type: varchar
+        notNull: true
+      record_id:
+        name: record_id
+        type: bigint
+        notNull: true
+      blob_id:
+        name: blob_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_record_type_record_id_name_blob_id:
+        type: UNIQUE
+        name: UNIQUE_record_type_record_id_name_blob_id
+        columnNames:
+          - record_type
+          - record_id
+          - name
+          - blob_id
+      fk_active_storage_attachments_blob_id:
+        type: FOREIGN KEY
+        name: fk_active_storage_attachments_blob_id
+        columnNames:
+          - blob_id
+        targetTableName: active_storage_blobs
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  active_storage_blobs:
+    name: active_storage_blobs
+    indexes:
+      index_active_storage_blobs_on_key:
+        name: index_active_storage_blobs_on_key
+        unique: true
+        columns:
+          - key
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      key:
+        name: key
+        type: varchar
+        notNull: true
+      filename:
+        name: filename
+        type: varchar
+        notNull: true
+      content_type:
+        name: content_type
+        type: varchar
+        notNull: false
+      metadata:
+        name: metadata
+        type: text
+        notNull: false
+      service_name:
+        name: service_name
+        type: varchar
+        notNull: true
+      byte_size:
+        name: byte_size
+        type: bigint
+        notNull: true
+      checksum:
+        name: checksum
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_key:
+        type: UNIQUE
+        name: UNIQUE_key
+        columnNames:
+          - key
+  active_storage_variant_records:
+    name: active_storage_variant_records
+    indexes:
+      index_active_storage_variant_records_uniqueness:
+        name: index_active_storage_variant_records_uniqueness
+        unique: true
+        columns:
+          - blob_id
+          - variation_digest
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      blob_id:
+        name: blob_id
+        type: bigint
+        notNull: true
+      variation_digest:
+        name: variation_digest
+        type: varchar
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_blob_id_variation_digest:
+        type: UNIQUE
+        name: UNIQUE_blob_id_variation_digest
+        columnNames:
+          - blob_id
+          - variation_digest
+      fk_active_storage_variant_records_blob_id:
+        type: FOREIGN KEY
+        name: fk_active_storage_variant_records_blob_id
+        columnNames:
+          - blob_id
+        targetTableName: active_storage_blobs
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  areas:
+    name: areas
+    indexes:
+      index_areas_on_user_id:
+        name: index_areas_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      longitude:
+        name: longitude
+        type: decimal
+        notNull: true
+      latitude:
+        name: latitude
+        type: decimal
+        notNull: true
+      radius:
+        name: radius
+        type: integer
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_areas_user_id:
+        type: FOREIGN KEY
+        name: fk_areas_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  countries:
+    name: countries
+    indexes:
+      index_countries_on_geom:
+        name: index_countries_on_geom
+        unique: false
+        columns:
+          - geom
+        type: gist
+      index_countries_on_iso_a2:
+        name: index_countries_on_iso_a2
+        unique: false
+        columns:
+          - iso_a2
+        type: ""
+      index_countries_on_iso_a3:
+        name: index_countries_on_iso_a3
+        unique: false
+        columns:
+          - iso_a3
+        type: ""
+      index_countries_on_name:
+        name: index_countries_on_name
+        unique: false
+        columns:
+          - name
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      iso_a2:
+        name: iso_a2
+        type: varchar
+        notNull: true
+      iso_a3:
+        name: iso_a3
+        type: varchar
+        notNull: true
+      geom:
+        name: geom
+        type: geometry
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  data_migrations:
+    name: data_migrations
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: string
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  digests:
+    name: digests
+    indexes:
+      index_digests_on_period_type:
+        name: index_digests_on_period_type
+        unique: false
+        columns:
+          - period_type
+        type: ""
+      index_digests_on_sharing_uuid:
+        name: index_digests_on_sharing_uuid
+        unique: true
+        columns:
+          - sharing_uuid
+        type: ""
+      index_digests_on_user_year_month_period_type:
+        name: index_digests_on_user_year_month_period_type
+        unique: true
+        columns:
+          - user_id
+          - year
+          - month
+          - period_type
+        type: ""
+      index_digests_on_user_id:
+        name: index_digests_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+      index_digests_on_year:
+        name: index_digests_on_year
+        unique: false
+        columns:
+          - year
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      year:
+        name: year
+        type: integer
+        notNull: true
+      period_type:
+        name: period_type
+        type: integer
+        default: 0
+        notNull: true
+      distance:
+        name: distance
+        type: bigint
+        default: 0
+        notNull: true
+      toponyms:
+        name: toponyms
+        type: jsonb
+        notNull: false
+      monthly_distances:
+        name: monthly_distances
+        type: jsonb
+        notNull: false
+      time_spent_by_location:
+        name: time_spent_by_location
+        type: jsonb
+        notNull: false
+      first_time_visits:
+        name: first_time_visits
+        type: jsonb
+        notNull: false
+      year_over_year:
+        name: year_over_year
+        type: jsonb
+        notNull: false
+      all_time_stats:
+        name: all_time_stats
+        type: jsonb
+        notNull: false
+      sharing_settings:
+        name: sharing_settings
+        type: jsonb
+        notNull: false
+      sharing_uuid:
+        name: sharing_uuid
+        type: uuid
+        notNull: false
+      sent_at:
+        name: sent_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      month:
+        name: month
+        type: integer
+        notNull: false
+      travel_patterns:
+        name: travel_patterns
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_sharing_uuid:
+        type: UNIQUE
+        name: UNIQUE_sharing_uuid
+        columnNames:
+          - sharing_uuid
+      UNIQUE_user_id_year_month_period_type:
+        type: UNIQUE
+        name: UNIQUE_user_id_year_month_period_type
+        columnNames:
+          - user_id
+          - year
+          - month
+          - period_type
+      fk_digests_user_id:
+        type: FOREIGN KEY
+        name: fk_digests_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  exports:
+    name: exports
+    indexes:
+      index_exports_on_file_type:
+        name: index_exports_on_file_type
+        unique: false
+        columns:
+          - file_type
+        type: ""
+      index_exports_on_status:
+        name: index_exports_on_status
+        unique: false
+        columns:
+          - status
+        type: ""
+      index_exports_on_user_id:
+        name: index_exports_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      url:
+        name: url
+        type: varchar
+        notNull: false
+      status:
+        name: status
+        type: integer
+        default: 0
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      file_format:
+        name: file_format
+        type: integer
+        default: 0
+        notNull: false
+      start_at:
+        name: start_at
+        type: timestamp
+        notNull: false
+      end_at:
+        name: end_at
+        type: timestamp
+        notNull: false
+      file_type:
+        name: file_type
+        type: integer
+        default: 0
+        notNull: true
+      processing_started_at:
+        name: processing_started_at
+        type: timestamp
+        notNull: false
+      error_message:
+        name: error_message
+        type: text
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  families:
+    name: families
+    indexes:
+      index_families_on_creator_id:
+        name: index_families_on_creator_id
+        unique: false
+        columns:
+          - creator_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      creator_id:
+        name: creator_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_families_creator_id:
+        type: FOREIGN KEY
+        name: fk_families_creator_id
+        columnNames:
+          - creator_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  family_invitations:
+    name: family_invitations
+    indexes:
+      index_family_invitations_on_family_id_and_email:
+        name: index_family_invitations_on_family_id_and_email
+        unique: false
+        columns:
+          - family_id
+          - email
+        type: ""
+      index_family_invitations_on_family_status_expires:
+        name: index_family_invitations_on_family_status_expires
+        unique: false
+        columns:
+          - family_id
+          - status
+          - expires_at
+        type: ""
+      index_family_invitations_on_status_and_expires_at:
+        name: index_family_invitations_on_status_and_expires_at
+        unique: false
+        columns:
+          - status
+          - expires_at
+        type: ""
+      index_family_invitations_on_status_and_updated_at:
+        name: index_family_invitations_on_status_and_updated_at
+        unique: false
+        columns:
+          - status
+          - updated_at
+        type: ""
+      index_family_invitations_on_token:
+        name: index_family_invitations_on_token
+        unique: true
+        columns:
+          - token
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      family_id:
+        name: family_id
+        type: bigint
+        notNull: true
+      email:
+        name: email
+        type: varchar
+        notNull: true
+      token:
+        name: token
+        type: varchar
+        notNull: true
+      expires_at:
+        name: expires_at
+        type: timestamp
+        notNull: true
+      invited_by_id:
+        name: invited_by_id
+        type: bigint
+        notNull: true
+      status:
+        name: status
+        type: integer
+        default: 0
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_token:
+        type: UNIQUE
+        name: UNIQUE_token
+        columnNames:
+          - token
+      fk_family_invitations_family_id:
+        type: FOREIGN KEY
+        name: fk_family_invitations_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_family_invitations_invited_by_id:
+        type: FOREIGN KEY
+        name: fk_family_invitations_invited_by_id
+        columnNames:
+          - invited_by_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  family_location_requests:
+    name: family_location_requests
+    indexes:
+      idx_family_loc_requests_expires_status:
+        name: idx_family_loc_requests_expires_status
+        unique: false
+        columns:
+          - expires_at
+          - status
+        type: ""
+      index_family_location_requests_on_family_id:
+        name: index_family_location_requests_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+      idx_family_loc_requests_requester_target_status:
+        name: idx_family_loc_requests_requester_target_status
+        unique: false
+        columns:
+          - requester_id
+          - target_user_id
+          - status
+        type: ""
+      idx_family_loc_requests_target_status:
+        name: idx_family_loc_requests_target_status
+        unique: false
+        columns:
+          - target_user_id
+          - status
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      requester_id:
+        name: requester_id
+        type: bigint
+        notNull: true
+      target_user_id:
+        name: target_user_id
+        type: bigint
+        notNull: true
+      family_id:
+        name: family_id
+        type: bigint
+        notNull: true
+      status:
+        name: status
+        type: integer
+        default: 0
+        notNull: true
+      suggested_duration:
+        name: suggested_duration
+        type: varchar
+        default: 24h
+        notNull: true
+      expires_at:
+        name: expires_at
+        type: timestamp
+        notNull: true
+      responded_at:
+        name: responded_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_family_location_requests_family_id:
+        type: FOREIGN KEY
+        name: fk_family_location_requests_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_family_location_requests_requester_id:
+        type: FOREIGN KEY
+        name: fk_family_location_requests_requester_id
+        columnNames:
+          - requester_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_family_location_requests_target_user_id:
+        type: FOREIGN KEY
+        name: fk_family_location_requests_target_user_id
+        columnNames:
+          - target_user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  family_memberships:
+    name: family_memberships
+    indexes:
+      index_family_memberships_on_family_and_role:
+        name: index_family_memberships_on_family_and_role
+        unique: false
+        columns:
+          - family_id
+          - role
+        type: ""
+      index_family_memberships_on_user_id:
+        name: index_family_memberships_on_user_id
+        unique: true
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      family_id:
+        name: family_id
+        type: bigint
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      role:
+        name: role
+        type: integer
+        default: 1
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_user_id:
+        type: UNIQUE
+        name: UNIQUE_user_id
+        columnNames:
+          - user_id
+      fk_family_memberships_family_id:
+        type: FOREIGN KEY
+        name: fk_family_memberships_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_family_memberships_user_id:
+        type: FOREIGN KEY
+        name: fk_family_memberships_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  flipper_features:
+    name: flipper_features
+    indexes:
+      index_flipper_features_on_key:
+        name: index_flipper_features_on_key
+        unique: true
+        columns:
+          - key
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      key:
+        name: key
+        type: varchar
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_key:
+        type: UNIQUE
+        name: UNIQUE_key
+        columnNames:
+          - key
+  flipper_gates:
+    name: flipper_gates
+    indexes:
+      index_flipper_gates_on_feature_key_and_key_and_value:
+        name: index_flipper_gates_on_feature_key_and_key_and_value
+        unique: true
+        columns:
+          - feature_key
+          - key
+          - value
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      feature_key:
+        name: feature_key
+        type: varchar
+        notNull: true
+      key:
+        name: key
+        type: varchar
+        notNull: true
+      value:
+        name: value
+        type: text
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_feature_key_key_value:
+        type: UNIQUE
+        name: UNIQUE_feature_key_key_value
+        columnNames:
+          - feature_key
+          - key
+          - value
+  imports:
+    name: imports
+    indexes:
+      index_imports_on_source:
+        name: index_imports_on_source
+        unique: false
+        columns:
+          - source
+        type: ""
+      index_imports_on_status:
+        name: index_imports_on_status
+        unique: false
+        columns:
+          - status
+        type: ""
+      index_imports_on_user_id:
+        name: index_imports_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      source:
+        name: source
+        type: integer
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      raw_points:
+        name: raw_points
+        type: integer
+        default: 0
+        notNull: false
+      doubles:
+        name: doubles
+        type: integer
+        default: 0
+        notNull: false
+      processed:
+        name: processed
+        type: integer
+        default: 0
+        notNull: false
+      raw_data:
+        name: raw_data
+        type: jsonb
+        notNull: false
+      points_count:
+        name: points_count
+        type: integer
+        default: 0
+        notNull: false
+      status:
+        name: status
+        type: integer
+        default: 0
+        notNull: true
+      processing_started_at:
+        name: processing_started_at
+        type: timestamp
+        notNull: false
+      error_message:
+        name: error_message
+        type: text
+        notNull: false
+      demo:
+        name: demo
+        type: boolean
+        default: false
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  notifications:
+    name: notifications
+    indexes:
+      index_notifications_on_kind:
+        name: index_notifications_on_kind
+        unique: false
+        columns:
+          - kind
+        type: ""
+      index_notifications_on_user_id:
+        name: index_notifications_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      title:
+        name: title
+        type: varchar
+        notNull: true
+      content:
+        name: content
+        type: text
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      kind:
+        name: kind
+        type: integer
+        default: 0
+        notNull: true
+      read_at:
+        name: read_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_notifications_user_id:
+        type: FOREIGN KEY
+        name: fk_notifications_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  place_visits:
+    name: place_visits
+    indexes:
+      index_place_visits_on_place_id:
+        name: index_place_visits_on_place_id
+        unique: false
+        columns:
+          - place_id
+        type: ""
+      idx_place_visits_visit_id_place_id:
+        name: idx_place_visits_visit_id_place_id
+        unique: true
+        columns:
+          - visit_id
+          - place_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      place_id:
+        name: place_id
+        type: bigint
+        notNull: true
+      visit_id:
+        name: visit_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_visit_id_place_id:
+        type: UNIQUE
+        name: UNIQUE_visit_id_place_id
+        columnNames:
+          - visit_id
+          - place_id
+      fk_place_visits_place_id:
+        type: FOREIGN KEY
+        name: fk_place_visits_place_id
+        columnNames:
+          - place_id
+        targetTableName: places
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_place_visits_visit_id:
+        type: FOREIGN KEY
+        name: fk_place_visits_visit_id
+        columnNames:
+          - visit_id
+        targetTableName: visits
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  places:
+    name: places
+    indexes:
+      index_places_on_geodata_osm_id:
+        name: index_places_on_geodata_osm_id
+        unique: false
+        columns: []
+        type: ""
+      index_places_on_lonlat:
+        name: index_places_on_lonlat
+        unique: false
+        columns:
+          - lonlat
+        type: gist
+      index_places_on_user_id:
+        name: index_places_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      longitude:
+        name: longitude
+        type: decimal
+        notNull: true
+      latitude:
+        name: latitude
+        type: decimal
+        notNull: true
+      city:
+        name: city
+        type: varchar
+        notNull: false
+      country:
+        name: country
+        type: varchar
+        notNull: false
+      source:
+        name: source
+        type: integer
+        default: 0
+        notNull: false
+      geodata:
+        name: geodata
+        type: jsonb
+        notNull: true
+      reverse_geocoded_at:
+        name: reverse_geocoded_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      lonlat:
+        name: lonlat
+        type: geography
+        notNull: false
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: false
+      note:
+        name: note
+        type: text
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  points:
+    name: points
+    indexes:
+      index_points_on_not_anomaly:
+        name: index_points_on_not_anomaly
+        unique: false
+        columns:
+          - anomaly
+        type: ""
+      index_points_on_not_reverse_geocoded:
+        name: index_points_on_not_reverse_geocoded
+        unique: false
+        columns:
+          - id
+        type: ""
+      index_points_on_import_id:
+        name: index_points_on_import_id
+        unique: false
+        columns:
+          - import_id
+        type: ""
+      index_points_on_lonlat_timestamp_user_id:
+        name: index_points_on_lonlat_timestamp_user_id
+        unique: true
+        columns:
+          - lonlat
+          - timestamp
+          - user_id
+        type: ""
+      index_points_on_lonlat:
+        name: index_points_on_lonlat
+        unique: false
+        columns:
+          - lonlat
+        type: gist
+      index_points_on_raw_data_archive_id:
+        name: index_points_on_raw_data_archive_id
+        unique: false
+        columns:
+          - raw_data_archive_id
+        type: ""
+      idx_points_track_id_timestamp:
+        name: idx_points_track_id_timestamp
+        unique: false
+        columns:
+          - track_id
+          - timestamp
+        type: ""
+      index_points_on_track_id:
+        name: index_points_on_track_id
+        unique: false
+        columns:
+          - track_id
+        type: ""
+      idx_points_user_country_name:
+        name: idx_points_user_country_name
+        unique: false
+        columns:
+          - user_id
+          - country_name
+        type: ""
+      index_points_on_user_id_and_empty_geodata:
+        name: index_points_on_user_id_and_empty_geodata
+        unique: false
+        columns:
+          - user_id
+          - geodata
+        type: ""
+      index_points_on_unarchived:
+        name: index_points_on_unarchived
+        unique: false
+        columns:
+          - user_id
+          - id
+        type: ""
+      idx_points_track_generation:
+        name: idx_points_track_generation
+        unique: false
+        columns:
+          - user_id
+          - timestamp
+          - track_id
+        type: ""
+      idx_points_user_visit_null_timestamp:
+        name: idx_points_user_visit_null_timestamp
+        unique: false
+        columns:
+          - user_id
+          - timestamp
+        type: ""
+      index_points_on_user_id_and_timestamp:
+        name: index_points_on_user_id_and_timestamp
+        unique: false
+        columns:
+          - user_id
+          - timestamp
+        type: ""
+      index_points_on_user_id:
+        name: index_points_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+      index_points_on_visit_id:
+        name: index_points_on_visit_id
+        unique: false
+        columns:
+          - visit_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      battery_status:
+        name: battery_status
+        type: integer
+        notNull: false
+      ping:
+        name: ping
+        type: varchar
+        notNull: false
+      battery:
+        name: battery
+        type: integer
+        notNull: false
+      tracker_id:
+        name: tracker_id
+        type: varchar
+        notNull: false
+      topic:
+        name: topic
+        type: varchar
+        notNull: false
+      altitude:
+        name: altitude
+        type: integer
+        notNull: false
+      longitude:
+        name: longitude
+        type: decimal
+        notNull: false
+      velocity:
+        name: velocity
+        type: varchar
+        notNull: false
+      trigger:
+        name: trigger
+        type: integer
+        notNull: false
+      bssid:
+        name: bssid
+        type: varchar
+        notNull: false
+      ssid:
+        name: ssid
+        type: varchar
+        notNull: false
+      connection:
+        name: connection
+        type: integer
+        notNull: false
+      vertical_accuracy:
+        name: vertical_accuracy
+        type: integer
+        notNull: false
+      accuracy:
+        name: accuracy
+        type: integer
+        notNull: false
+      timestamp:
+        name: timestamp
+        type: integer
+        notNull: false
+      latitude:
+        name: latitude
+        type: decimal
+        notNull: false
+      mode:
+        name: mode
+        type: integer
+        notNull: false
+      inrids:
+        name: inrids
+        type: text
+        notNull: false
+      in_regions:
+        name: in_regions
+        type: text
+        notNull: false
+      raw_data:
+        name: raw_data
+        type: jsonb
+        notNull: false
+      import_id:
+        name: import_id
+        type: bigint
+        notNull: false
+      city:
+        name: city
+        type: varchar
+        notNull: false
+      country:
+        name: country
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: false
+      geodata:
+        name: geodata
+        type: jsonb
+        notNull: true
+      visit_id:
+        name: visit_id
+        type: bigint
+        notNull: false
+      reverse_geocoded_at:
+        name: reverse_geocoded_at
+        type: timestamp
+        notNull: false
+      course:
+        name: course
+        type: decimal
+        notNull: false
+      course_accuracy:
+        name: course_accuracy
+        type: decimal
+        notNull: false
+      external_track_id:
+        name: external_track_id
+        type: varchar
+        notNull: false
+      lonlat:
+        name: lonlat
+        type: geography
+        notNull: false
+      country_id:
+        name: country_id
+        type: bigint
+        notNull: false
+      track_id:
+        name: track_id
+        type: bigint
+        notNull: false
+      country_name:
+        name: country_name
+        type: varchar
+        notNull: false
+      raw_data_archived:
+        name: raw_data_archived
+        type: boolean
+        default: false
+        notNull: true
+      raw_data_archive_id:
+        name: raw_data_archive_id
+        type: bigint
+        notNull: false
+      motion_data:
+        name: motion_data
+        type: jsonb
+        notNull: true
+      altitude_decimal:
+        name: altitude_decimal
+        type: decimal
+        notNull: false
+      anomaly:
+        name: anomaly
+        type: boolean
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_lonlat_timestamp_user_id:
+        type: UNIQUE
+        name: UNIQUE_lonlat_timestamp_user_id
+        columnNames:
+          - lonlat
+          - timestamp
+          - user_id
+      fk_points_raw_data_archive_id:
+        type: FOREIGN KEY
+        name: fk_points_raw_data_archive_id
+        columnNames:
+          - raw_data_archive_id
+        targetTableName: points_raw_data_archives
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: RESTRICT
+      fk_points_user_id:
+        type: FOREIGN KEY
+        name: fk_points_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_points_visit_id:
+        type: FOREIGN KEY
+        name: fk_points_visit_id
+        columnNames:
+          - visit_id
+        targetTableName: visits
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  points_raw_data_archives:
+    name: points_raw_data_archives
+    indexes:
+      index_points_raw_data_archives_on_archived_at:
+        name: index_points_raw_data_archives_on_archived_at
+        unique: false
+        columns:
+          - archived_at
+        type: ""
+      index_raw_data_archives_uniqueness:
+        name: index_raw_data_archives_uniqueness
+        unique: true
+        columns:
+          - user_id
+          - year
+          - month
+          - chunk_number
+        type: ""
+      index_points_raw_data_archives_on_user_id_and_year_and_month:
+        name: index_points_raw_data_archives_on_user_id_and_year_and_month
+        unique: false
+        columns:
+          - user_id
+          - year
+          - month
+        type: ""
+      index_points_raw_data_archives_on_user_id:
+        name: index_points_raw_data_archives_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      year:
+        name: year
+        type: integer
+        notNull: true
+      month:
+        name: month
+        type: integer
+        notNull: true
+      chunk_number:
+        name: chunk_number
+        type: integer
+        default: 1
+        notNull: true
+      point_count:
+        name: point_count
+        type: integer
+        notNull: true
+      point_ids_checksum:
+        name: point_ids_checksum
+        type: varchar
+        notNull: true
+      metadata:
+        name: metadata
+        type: jsonb
+        notNull: true
+      archived_at:
+        name: archived_at
+        type: timestamp
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      verified_at:
+        name: verified_at
+        type: timestamp
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_user_id_year_month_chunk_number:
+        type: UNIQUE
+        name: UNIQUE_user_id_year_month_chunk_number
+        columnNames:
+          - user_id
+          - year
+          - month
+          - chunk_number
+      fk_points_raw_data_archives_user_id:
+        type: FOREIGN KEY
+        name: fk_points_raw_data_archives_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  stats:
+    name: stats
+    indexes:
+      index_stats_on_distance:
+        name: index_stats_on_distance
+        unique: false
+        columns:
+          - distance
+        type: ""
+      index_stats_on_h3_hex_ids:
+        name: index_stats_on_h3_hex_ids
+        unique: false
+        columns:
+          - h3_hex_ids
+        type: gin
+      index_stats_on_month:
+        name: index_stats_on_month
+        unique: false
+        columns:
+          - month
+        type: ""
+      index_stats_on_sharing_uuid:
+        name: index_stats_on_sharing_uuid
+        unique: true
+        columns:
+          - sharing_uuid
+        type: ""
+      index_stats_on_user_id_year_month:
+        name: index_stats_on_user_id_year_month
+        unique: true
+        columns:
+          - user_id
+          - year
+          - month
+        type: ""
+      index_stats_on_user_id:
+        name: index_stats_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+      index_stats_on_year:
+        name: index_stats_on_year
+        unique: false
+        columns:
+          - year
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      year:
+        name: year
+        type: integer
+        notNull: true
+      month:
+        name: month
+        type: integer
+        notNull: true
+      distance:
+        name: distance
+        type: integer
+        notNull: true
+      toponyms:
+        name: toponyms
+        type: jsonb
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      daily_distance:
+        name: daily_distance
+        type: jsonb
+        notNull: false
+      sharing_settings:
+        name: sharing_settings
+        type: jsonb
+        notNull: false
+      sharing_uuid:
+        name: sharing_uuid
+        type: uuid
+        notNull: false
+      h3_hex_ids:
+        name: h3_hex_ids
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_sharing_uuid:
+        type: UNIQUE
+        name: UNIQUE_sharing_uuid
+        columnNames:
+          - sharing_uuid
+      UNIQUE_user_id_year_month:
+        type: UNIQUE
+        name: UNIQUE_user_id_year_month
+        columnNames:
+          - user_id
+          - year
+          - month
+      fk_stats_user_id:
+        type: FOREIGN KEY
+        name: fk_stats_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  taggings:
+    name: taggings
+    indexes:
+      index_taggings_on_tag_id:
+        name: index_taggings_on_tag_id
+        unique: false
+        columns:
+          - tag_id
+        type: ""
+      index_taggings_on_taggable_and_tag:
+        name: index_taggings_on_taggable_and_tag
+        unique: true
+        columns:
+          - taggable_type
+          - taggable_id
+          - tag_id
+        type: ""
+      index_taggings_on_taggable:
+        name: index_taggings_on_taggable
+        unique: false
+        columns:
+          - taggable_type
+          - taggable_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      taggable_type:
+        name: taggable_type
+        type: varchar
+        notNull: true
+      taggable_id:
+        name: taggable_id
+        type: bigint
+        notNull: true
+      tag_id:
+        name: tag_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_taggable_type_taggable_id_tag_id:
+        type: UNIQUE
+        name: UNIQUE_taggable_type_taggable_id_tag_id
+        columnNames:
+          - taggable_type
+          - taggable_id
+          - tag_id
+      fk_taggings_tag_id:
+        type: FOREIGN KEY
+        name: fk_taggings_tag_id
+        columnNames:
+          - tag_id
+        targetTableName: tags
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  tags:
+    name: tags
+    indexes:
+      index_tags_on_privacy_radius_meters:
+        name: index_tags_on_privacy_radius_meters
+        unique: false
+        columns:
+          - privacy_radius_meters
+        type: ""
+      index_tags_on_user_id_and_name:
+        name: index_tags_on_user_id_and_name
+        unique: true
+        columns:
+          - user_id
+          - name
+        type: ""
+      index_tags_on_user_id:
+        name: index_tags_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      icon:
+        name: icon
+        type: varchar
+        notNull: false
+      color:
+        name: color
+        type: varchar
+        notNull: false
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      privacy_radius_meters:
+        name: privacy_radius_meters
+        type: integer
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_user_id_name:
+        type: UNIQUE
+        name: UNIQUE_user_id_name
+        columnNames:
+          - user_id
+          - name
+      fk_tags_user_id:
+        type: FOREIGN KEY
+        name: fk_tags_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  track_segments:
+    name: track_segments
+    indexes:
+      index_track_segments_on_track_and_indices:
+        name: index_track_segments_on_track_and_indices
+        unique: false
+        columns:
+          - track_id
+          - start_index
+          - end_index
+        type: ""
+      index_track_segments_on_track_id_and_transportation_mode:
+        name: index_track_segments_on_track_id_and_transportation_mode
+        unique: false
+        columns:
+          - track_id
+          - transportation_mode
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      track_id:
+        name: track_id
+        type: bigint
+        notNull: true
+      transportation_mode:
+        name: transportation_mode
+        type: integer
+        default: 0
+        notNull: true
+      start_index:
+        name: start_index
+        type: integer
+        notNull: true
+      end_index:
+        name: end_index
+        type: integer
+        notNull: true
+      distance:
+        name: distance
+        type: integer
+        notNull: false
+      duration:
+        name: duration
+        type: integer
+        notNull: false
+      avg_speed:
+        name: avg_speed
+        type: float
+        notNull: false
+      max_speed:
+        name: max_speed
+        type: float
+        notNull: false
+      avg_acceleration:
+        name: avg_acceleration
+        type: float
+        notNull: false
+      confidence:
+        name: confidence
+        type: integer
+        default: 0
+        notNull: false
+      source:
+        name: source
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_track_segments_track_id:
+        type: FOREIGN KEY
+        name: fk_track_segments_track_id
+        columnNames:
+          - track_id
+        targetTableName: tracks
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  tracks:
+    name: tracks
+    indexes:
+      index_tracks_on_dominant_mode:
+        name: index_tracks_on_dominant_mode
+        unique: false
+        columns:
+          - dominant_mode
+        type: ""
+      idx_tracks_user_id_start_at:
+        name: idx_tracks_user_id_start_at
+        unique: false
+        columns:
+          - user_id
+          - start_at
+        type: ""
+      index_tracks_on_user_id:
+        name: index_tracks_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      start_at:
+        name: start_at
+        type: timestamp
+        notNull: true
+      end_at:
+        name: end_at
+        type: timestamp
+        notNull: true
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      original_path:
+        name: original_path
+        type: geometry
+        notNull: true
+      distance:
+        name: distance
+        type: bigint
+        notNull: false
+      avg_speed:
+        name: avg_speed
+        type: float
+        notNull: false
+      duration:
+        name: duration
+        type: integer
+        notNull: false
+      elevation_gain:
+        name: elevation_gain
+        type: integer
+        notNull: false
+      elevation_loss:
+        name: elevation_loss
+        type: integer
+        notNull: false
+      elevation_max:
+        name: elevation_max
+        type: integer
+        notNull: false
+      elevation_min:
+        name: elevation_min
+        type: integer
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      dominant_mode:
+        name: dominant_mode
+        type: integer
+        default: 0
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_tracks_user_id:
+        type: FOREIGN KEY
+        name: fk_tracks_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  trips:
+    name: trips
+    indexes:
+      index_trips_on_user_id:
+        name: index_trips_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      started_at:
+        name: started_at
+        type: timestamp
+        notNull: true
+      ended_at:
+        name: ended_at
+        type: timestamp
+        notNull: true
+      distance:
+        name: distance
+        type: integer
+        notNull: false
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      path:
+        name: path
+        type: geometry
+        notNull: false
+      visited_countries:
+        name: visited_countries
+        type: jsonb
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_trips_user_id:
+        type: FOREIGN KEY
+        name: fk_trips_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  users:
+    name: users
+    indexes:
+      index_users_on_api_key:
+        name: index_users_on_api_key
+        unique: false
+        columns:
+          - api_key
+        type: ""
+      index_users_on_deleted_at:
+        name: index_users_on_deleted_at
+        unique: false
+        columns:
+          - deleted_at
+        type: ""
+      index_users_on_email:
+        name: index_users_on_email
+        unique: true
+        columns:
+          - email
+        type: ""
+      index_users_on_plan:
+        name: index_users_on_plan
+        unique: false
+        columns:
+          - plan
+        type: ""
+      index_users_on_provider_and_uid_present:
+        name: index_users_on_provider_and_uid_present
+        unique: true
+        columns:
+          - provider
+          - uid
+        type: ""
+      index_users_on_reset_password_token:
+        name: index_users_on_reset_password_token
+        unique: true
+        columns:
+          - reset_password_token
+        type: ""
+      index_users_on_signup_variant_reverse_trial:
+        name: index_users_on_signup_variant_reverse_trial
+        unique: false
+        columns:
+          - signup_variant
+        type: ""
+      index_users_on_status:
+        name: index_users_on_status
+        unique: false
+        columns:
+          - status
+        type: ""
+      index_users_on_unlock_token:
+        name: index_users_on_unlock_token
+        unique: true
+        columns:
+          - unlock_token
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      email:
+        name: email
+        type: varchar
+        default: ""
+        notNull: true
+      encrypted_password:
+        name: encrypted_password
+        type: varchar
+        default: ""
+        notNull: true
+      reset_password_token:
+        name: reset_password_token
+        type: varchar
+        notNull: false
+      reset_password_sent_at:
+        name: reset_password_sent_at
+        type: timestamp
+        notNull: false
+      remember_created_at:
+        name: remember_created_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      api_key:
+        name: api_key
+        type: varchar
+        default: ""
+        notNull: true
+      theme:
+        name: theme
+        type: varchar
+        default: dark
+        notNull: true
+      settings:
+        name: settings
+        type: jsonb
+        notNull: false
+      admin:
+        name: admin
+        type: boolean
+        default: false
+        notNull: false
+      sign_in_count:
+        name: sign_in_count
+        type: integer
+        default: 0
+        notNull: true
+      current_sign_in_at:
+        name: current_sign_in_at
+        type: timestamp
+        notNull: false
+      last_sign_in_at:
+        name: last_sign_in_at
+        type: timestamp
+        notNull: false
+      current_sign_in_ip:
+        name: current_sign_in_ip
+        type: varchar
+        notNull: false
+      last_sign_in_ip:
+        name: last_sign_in_ip
+        type: varchar
+        notNull: false
+      status:
+        name: status
+        type: integer
+        default: 0
+        notNull: false
+      active_until:
+        name: active_until
+        type: timestamp
+        notNull: false
+      points_count:
+        name: points_count
+        type: integer
+        default: 0
+        notNull: true
+      utm_source:
+        name: utm_source
+        type: varchar
+        notNull: false
+      utm_medium:
+        name: utm_medium
+        type: varchar
+        notNull: false
+      utm_campaign:
+        name: utm_campaign
+        type: varchar
+        notNull: false
+      utm_term:
+        name: utm_term
+        type: varchar
+        notNull: false
+      utm_content:
+        name: utm_content
+        type: varchar
+        notNull: false
+      provider:
+        name: provider
+        type: varchar
+        notNull: false
+      uid:
+        name: uid
+        type: varchar
+        notNull: false
+      deleted_at:
+        name: deleted_at
+        type: timestamp
+        notNull: false
+      plan:
+        name: plan
+        type: integer
+        default: 1
+        notNull: true
+      failed_attempts:
+        name: failed_attempts
+        type: integer
+        default: 0
+        notNull: true
+      locked_at:
+        name: locked_at
+        type: timestamp
+        notNull: false
+      unlock_token:
+        name: unlock_token
+        type: varchar
+        notNull: false
+      otp_secret:
+        name: otp_secret
+        type: varchar
+        notNull: false
+      consumed_timestep:
+        name: consumed_timestep
+        type: integer
+        notNull: false
+      otp_required_for_login:
+        name: otp_required_for_login
+        type: boolean
+        default: false
+        notNull: true
+      otp_backup_codes:
+        name: otp_backup_codes
+        type: text
+        notNull: false
+      subscription_source:
+        name: subscription_source
+        type: integer
+        default: 0
+        notNull: true
+      signup_variant:
+        name: signup_variant
+        type: varchar
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_email:
+        type: UNIQUE
+        name: UNIQUE_email
+        columnNames:
+          - email
+      UNIQUE_provider_uid:
+        type: UNIQUE
+        name: UNIQUE_provider_uid
+        columnNames:
+          - provider
+          - uid
+      UNIQUE_reset_password_token:
+        type: UNIQUE
+        name: UNIQUE_reset_password_token
+        columnNames:
+          - reset_password_token
+      UNIQUE_unlock_token:
+        type: UNIQUE
+        name: UNIQUE_unlock_token
+        columnNames:
+          - unlock_token
+      users_admin_null:
+        type: CHECK
+        name: users_admin_null
+        detail: admin IS NOT NULL
+  visits:
+    name: visits
+    indexes:
+      index_visits_on_area_id:
+        name: index_visits_on_area_id
+        unique: false
+        columns:
+          - area_id
+        type: ""
+      index_visits_on_place_id:
+        name: index_visits_on_place_id
+        unique: false
+        columns:
+          - place_id
+        type: ""
+      index_visits_on_started_at:
+        name: index_visits_on_started_at
+        unique: false
+        columns:
+          - started_at
+        type: ""
+      index_visits_on_user_id:
+        name: index_visits_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      area_id:
+        name: area_id
+        type: bigint
+        notNull: false
+      user_id:
+        name: user_id
+        type: bigint
+        notNull: true
+      started_at:
+        name: started_at
+        type: timestamp
+        notNull: true
+      ended_at:
+        name: ended_at
+        type: timestamp
+        notNull: true
+      duration:
+        name: duration
+        type: integer
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      status:
+        name: status
+        type: integer
+        default: 0
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      place_id:
+        name: place_id
+        type: bigint
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_visits_area_id:
+        type: FOREIGN KEY
+        name: fk_visits_area_id
+        columnNames:
+          - area_id
+        targetTableName: areas
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_visits_place_id:
+        type: FOREIGN KEY
+        name: fk_visits_place_id
+        columnNames:
+          - place_id
+        targetTableName: places
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_visits_user_id:
+        type: FOREIGN KEY
+        name: fk_visits_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+enums: {}
+extensions: {}

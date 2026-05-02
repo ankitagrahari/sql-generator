@@ -1,0 +1,4354 @@
+tables:
+  accounts:
+    name: accounts
+    indexes:
+      index_accounts_on_accountable_id_and_accountable_type:
+        name: index_accounts_on_accountable_id_and_accountable_type
+        unique: false
+        columns:
+          - accountable_id
+          - accountable_type
+        type: ""
+      index_accounts_on_accountable_type:
+        name: index_accounts_on_accountable_type
+        unique: false
+        columns:
+          - accountable_type
+        type: ""
+      index_accounts_on_currency:
+        name: index_accounts_on_currency
+        unique: false
+        columns:
+          - currency
+        type: ""
+      index_accounts_on_family_id_and_accountable_type:
+        name: index_accounts_on_family_id_and_accountable_type
+        unique: false
+        columns:
+          - family_id
+          - accountable_type
+        type: ""
+      index_accounts_on_family_id_and_id:
+        name: index_accounts_on_family_id_and_id
+        unique: false
+        columns:
+          - family_id
+          - id
+        type: ""
+      index_accounts_on_family_id_and_status:
+        name: index_accounts_on_family_id_and_status
+        unique: false
+        columns:
+          - family_id
+          - status
+        type: ""
+      index_accounts_on_family_id:
+        name: index_accounts_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+      index_accounts_on_import_id:
+        name: index_accounts_on_import_id
+        unique: false
+        columns:
+          - import_id
+        type: ""
+      index_accounts_on_plaid_account_id:
+        name: index_accounts_on_plaid_account_id
+        unique: false
+        columns:
+          - plaid_account_id
+        type: ""
+      index_accounts_on_status:
+        name: index_accounts_on_status
+        unique: false
+        columns:
+          - status
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      subtype:
+        name: subtype
+        type: varchar
+        notNull: false
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      accountable_type:
+        name: accountable_type
+        type: varchar
+        notNull: false
+      accountable_id:
+        name: accountable_id
+        type: uuid
+        notNull: false
+      balance:
+        name: balance
+        type: decimal
+        notNull: false
+      currency:
+        name: currency
+        type: varchar
+        notNull: false
+      classification:
+        name: classification
+        type: virtual
+        notNull: false
+      import_id:
+        name: import_id
+        type: uuid
+        notNull: false
+      plaid_account_id:
+        name: plaid_account_id
+        type: uuid
+        notNull: false
+      cash_balance:
+        name: cash_balance
+        type: decimal
+        default: "0.0"
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+      status:
+        name: status
+        type: varchar
+        default: active
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_accounts_family_id:
+        type: FOREIGN KEY
+        name: fk_accounts_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_accounts_import_id:
+        type: FOREIGN KEY
+        name: fk_accounts_import_id
+        columnNames:
+          - import_id
+        targetTableName: imports
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_accounts_plaid_account_id:
+        type: FOREIGN KEY
+        name: fk_accounts_plaid_account_id
+        columnNames:
+          - plaid_account_id
+        targetTableName: plaid_accounts
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  active_storage_attachments:
+    name: active_storage_attachments
+    indexes:
+      index_active_storage_attachments_on_blob_id:
+        name: index_active_storage_attachments_on_blob_id
+        unique: false
+        columns:
+          - blob_id
+        type: ""
+      index_active_storage_attachments_uniqueness:
+        name: index_active_storage_attachments_uniqueness
+        unique: true
+        columns:
+          - record_type
+          - record_id
+          - name
+          - blob_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      record_type:
+        name: record_type
+        type: varchar
+        notNull: true
+      record_id:
+        name: record_id
+        type: uuid
+        notNull: true
+      blob_id:
+        name: blob_id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_record_type_record_id_name_blob_id:
+        type: UNIQUE
+        name: UNIQUE_record_type_record_id_name_blob_id
+        columnNames:
+          - record_type
+          - record_id
+          - name
+          - blob_id
+      fk_active_storage_attachments_blob_id:
+        type: FOREIGN KEY
+        name: fk_active_storage_attachments_blob_id
+        columnNames:
+          - blob_id
+        targetTableName: active_storage_blobs
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  active_storage_blobs:
+    name: active_storage_blobs
+    indexes:
+      index_active_storage_blobs_on_key:
+        name: index_active_storage_blobs_on_key
+        unique: true
+        columns:
+          - key
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      key:
+        name: key
+        type: varchar
+        notNull: true
+      filename:
+        name: filename
+        type: varchar
+        notNull: true
+      content_type:
+        name: content_type
+        type: varchar
+        notNull: false
+      metadata:
+        name: metadata
+        type: text
+        notNull: false
+      service_name:
+        name: service_name
+        type: varchar
+        notNull: true
+      byte_size:
+        name: byte_size
+        type: bigint
+        notNull: true
+      checksum:
+        name: checksum
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_key:
+        type: UNIQUE
+        name: UNIQUE_key
+        columnNames:
+          - key
+  active_storage_variant_records:
+    name: active_storage_variant_records
+    indexes:
+      index_active_storage_variant_records_uniqueness:
+        name: index_active_storage_variant_records_uniqueness
+        unique: true
+        columns:
+          - blob_id
+          - variation_digest
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      blob_id:
+        name: blob_id
+        type: uuid
+        notNull: true
+      variation_digest:
+        name: variation_digest
+        type: varchar
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_blob_id_variation_digest:
+        type: UNIQUE
+        name: UNIQUE_blob_id_variation_digest
+        columnNames:
+          - blob_id
+          - variation_digest
+      fk_active_storage_variant_records_blob_id:
+        type: FOREIGN KEY
+        name: fk_active_storage_variant_records_blob_id
+        columnNames:
+          - blob_id
+        targetTableName: active_storage_blobs
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  addresses:
+    name: addresses
+    indexes:
+      index_addresses_on_addressable:
+        name: index_addresses_on_addressable
+        unique: false
+        columns:
+          - addressable_type
+          - addressable_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      addressable_type:
+        name: addressable_type
+        type: varchar
+        notNull: false
+      addressable_id:
+        name: addressable_id
+        type: uuid
+        notNull: false
+      line1:
+        name: line1
+        type: varchar
+        notNull: false
+      line2:
+        name: line2
+        type: varchar
+        notNull: false
+      county:
+        name: county
+        type: varchar
+        notNull: false
+      locality:
+        name: locality
+        type: varchar
+        notNull: false
+      region:
+        name: region
+        type: varchar
+        notNull: false
+      country:
+        name: country
+        type: varchar
+        notNull: false
+      postal_code:
+        name: postal_code
+        type: integer
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  api_keys:
+    name: api_keys
+    indexes:
+      index_api_keys_on_display_key:
+        name: index_api_keys_on_display_key
+        unique: true
+        columns:
+          - display_key
+        type: ""
+      index_api_keys_on_revoked_at:
+        name: index_api_keys_on_revoked_at
+        unique: false
+        columns:
+          - revoked_at
+        type: ""
+      index_api_keys_on_user_id_and_source:
+        name: index_api_keys_on_user_id_and_source
+        unique: false
+        columns:
+          - user_id
+          - source
+        type: ""
+      index_api_keys_on_user_id:
+        name: index_api_keys_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      user_id:
+        name: user_id
+        type: uuid
+        notNull: true
+      scopes:
+        name: scopes
+        type: json
+        notNull: false
+      last_used_at:
+        name: last_used_at
+        type: timestamp
+        notNull: false
+      expires_at:
+        name: expires_at
+        type: timestamp
+        notNull: false
+      revoked_at:
+        name: revoked_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      display_key:
+        name: display_key
+        type: varchar
+        notNull: true
+      source:
+        name: source
+        type: varchar
+        default: web
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_display_key:
+        type: UNIQUE
+        name: UNIQUE_display_key
+        columnNames:
+          - display_key
+      fk_api_keys_user_id:
+        type: FOREIGN KEY
+        name: fk_api_keys_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  balances:
+    name: balances
+    indexes:
+      index_account_balances_on_account_id_date_currency_unique:
+        name: index_account_balances_on_account_id_date_currency_unique
+        unique: true
+        columns:
+          - account_id
+          - date
+          - currency
+        type: ""
+      index_balances_on_account_id_and_date:
+        name: index_balances_on_account_id_and_date
+        unique: false
+        columns:
+          - account_id
+          - date
+        type: ""
+      index_balances_on_account_id:
+        name: index_balances_on_account_id
+        unique: false
+        columns:
+          - account_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      account_id:
+        name: account_id
+        type: uuid
+        notNull: true
+      date:
+        name: date
+        type: date
+        notNull: true
+      balance:
+        name: balance
+        type: decimal
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        default: USD
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      cash_balance:
+        name: cash_balance
+        type: decimal
+        default: "0.0"
+        notNull: false
+      start_cash_balance:
+        name: start_cash_balance
+        type: decimal
+        default: "0.0"
+        notNull: true
+      start_non_cash_balance:
+        name: start_non_cash_balance
+        type: decimal
+        default: "0.0"
+        notNull: true
+      cash_inflows:
+        name: cash_inflows
+        type: decimal
+        default: "0.0"
+        notNull: true
+      cash_outflows:
+        name: cash_outflows
+        type: decimal
+        default: "0.0"
+        notNull: true
+      non_cash_inflows:
+        name: non_cash_inflows
+        type: decimal
+        default: "0.0"
+        notNull: true
+      non_cash_outflows:
+        name: non_cash_outflows
+        type: decimal
+        default: "0.0"
+        notNull: true
+      net_market_flows:
+        name: net_market_flows
+        type: decimal
+        default: "0.0"
+        notNull: true
+      cash_adjustments:
+        name: cash_adjustments
+        type: decimal
+        default: "0.0"
+        notNull: true
+      non_cash_adjustments:
+        name: non_cash_adjustments
+        type: decimal
+        default: "0.0"
+        notNull: true
+      flows_factor:
+        name: flows_factor
+        type: integer
+        default: 1
+        notNull: true
+      start_balance:
+        name: start_balance
+        type: virtual
+        notNull: false
+      end_cash_balance:
+        name: end_cash_balance
+        type: virtual
+        notNull: false
+      end_non_cash_balance:
+        name: end_non_cash_balance
+        type: virtual
+        notNull: false
+      end_balance:
+        name: end_balance
+        type: virtual
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_account_id_date_currency:
+        type: UNIQUE
+        name: UNIQUE_account_id_date_currency
+        columnNames:
+          - account_id
+          - date
+          - currency
+      fk_balances_account_id:
+        type: FOREIGN KEY
+        name: fk_balances_account_id
+        columnNames:
+          - account_id
+        targetTableName: accounts
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: CASCADE
+  budget_categories:
+    name: budget_categories
+    indexes:
+      index_budget_categories_on_budget_id_and_category_id:
+        name: index_budget_categories_on_budget_id_and_category_id
+        unique: true
+        columns:
+          - budget_id
+          - category_id
+        type: ""
+      index_budget_categories_on_budget_id:
+        name: index_budget_categories_on_budget_id
+        unique: false
+        columns:
+          - budget_id
+        type: ""
+      index_budget_categories_on_category_id:
+        name: index_budget_categories_on_category_id
+        unique: false
+        columns:
+          - category_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      budget_id:
+        name: budget_id
+        type: uuid
+        notNull: true
+      category_id:
+        name: category_id
+        type: uuid
+        notNull: true
+      budgeted_spending:
+        name: budgeted_spending
+        type: decimal
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_budget_id_category_id:
+        type: UNIQUE
+        name: UNIQUE_budget_id_category_id
+        columnNames:
+          - budget_id
+          - category_id
+      fk_budget_categories_budget_id:
+        type: FOREIGN KEY
+        name: fk_budget_categories_budget_id
+        columnNames:
+          - budget_id
+        targetTableName: budgets
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_budget_categories_category_id:
+        type: FOREIGN KEY
+        name: fk_budget_categories_category_id
+        columnNames:
+          - category_id
+        targetTableName: categories
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  budgets:
+    name: budgets
+    indexes:
+      index_budgets_on_family_id_and_start_date_and_end_date:
+        name: index_budgets_on_family_id_and_start_date_and_end_date
+        unique: true
+        columns:
+          - family_id
+          - start_date
+          - end_date
+        type: ""
+      index_budgets_on_family_id:
+        name: index_budgets_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      start_date:
+        name: start_date
+        type: date
+        notNull: true
+      end_date:
+        name: end_date
+        type: date
+        notNull: true
+      budgeted_spending:
+        name: budgeted_spending
+        type: decimal
+        notNull: false
+      expected_income:
+        name: expected_income
+        type: decimal
+        notNull: false
+      currency:
+        name: currency
+        type: varchar
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_family_id_start_date_end_date:
+        type: UNIQUE
+        name: UNIQUE_family_id_start_date_end_date
+        columnNames:
+          - family_id
+          - start_date
+          - end_date
+      fk_budgets_family_id:
+        type: FOREIGN KEY
+        name: fk_budgets_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  categories:
+    name: categories
+    indexes:
+      index_categories_on_family_id:
+        name: index_categories_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      color:
+        name: color
+        type: varchar
+        default: "#6172F3"
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      parent_id:
+        name: parent_id
+        type: uuid
+        notNull: false
+      classification:
+        name: classification
+        type: varchar
+        default: expense
+        notNull: true
+      lucide_icon:
+        name: lucide_icon
+        type: varchar
+        default: shapes
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_categories_family_id:
+        type: FOREIGN KEY
+        name: fk_categories_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  chats:
+    name: chats
+    indexes:
+      index_chats_on_user_id:
+        name: index_chats_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      user_id:
+        name: user_id
+        type: uuid
+        notNull: true
+      title:
+        name: title
+        type: varchar
+        notNull: true
+      instructions:
+        name: instructions
+        type: varchar
+        notNull: false
+      error:
+        name: error
+        type: jsonb
+        notNull: false
+      latest_assistant_response_id:
+        name: latest_assistant_response_id
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_chats_user_id:
+        type: FOREIGN KEY
+        name: fk_chats_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  credit_cards:
+    name: credit_cards
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      available_credit:
+        name: available_credit
+        type: decimal
+        notNull: false
+      minimum_payment:
+        name: minimum_payment
+        type: decimal
+        notNull: false
+      apr:
+        name: apr
+        type: decimal
+        notNull: false
+      expiration_date:
+        name: expiration_date
+        type: date
+        notNull: false
+      annual_fee:
+        name: annual_fee
+        type: decimal
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  cryptos:
+    name: cryptos
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  data_enrichments:
+    name: data_enrichments
+    indexes:
+      idx_on_enrichable_id_enrichable_type_source_attribu_5be5f63e08:
+        name: idx_on_enrichable_id_enrichable_type_source_attribu_5be5f63e08
+        unique: true
+        columns:
+          - enrichable_id
+          - enrichable_type
+          - source
+          - attribute_name
+        type: ""
+      index_data_enrichments_on_enrichable:
+        name: index_data_enrichments_on_enrichable
+        unique: false
+        columns:
+          - enrichable_type
+          - enrichable_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      enrichable_type:
+        name: enrichable_type
+        type: varchar
+        notNull: true
+      enrichable_id:
+        name: enrichable_id
+        type: uuid
+        notNull: true
+      source:
+        name: source
+        type: varchar
+        notNull: false
+      attribute_name:
+        name: attribute_name
+        type: varchar
+        notNull: false
+      value:
+        name: value
+        type: jsonb
+        notNull: false
+      metadata:
+        name: metadata
+        type: jsonb
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_enrichable_id_enrichable_type_source_attribute_name:
+        type: UNIQUE
+        name: UNIQUE_enrichable_id_enrichable_type_source_attribute_name
+        columnNames:
+          - enrichable_id
+          - enrichable_type
+          - source
+          - attribute_name
+  depositories:
+    name: depositories
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  entries:
+    name: entries
+    indexes:
+      index_entries_on_lower_name:
+        name: index_entries_on_lower_name
+        unique: false
+        columns: []
+        type: ""
+      index_entries_on_account_id_and_date:
+        name: index_entries_on_account_id_and_date
+        unique: false
+        columns:
+          - account_id
+          - date
+        type: ""
+      index_entries_on_account_id:
+        name: index_entries_on_account_id
+        unique: false
+        columns:
+          - account_id
+        type: ""
+      index_entries_on_date:
+        name: index_entries_on_date
+        unique: false
+        columns:
+          - date
+        type: ""
+      index_entries_on_entryable_type:
+        name: index_entries_on_entryable_type
+        unique: false
+        columns:
+          - entryable_type
+        type: ""
+      index_entries_on_import_id:
+        name: index_entries_on_import_id
+        unique: false
+        columns:
+          - import_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      account_id:
+        name: account_id
+        type: uuid
+        notNull: true
+      entryable_type:
+        name: entryable_type
+        type: varchar
+        notNull: false
+      entryable_id:
+        name: entryable_id
+        type: uuid
+        notNull: false
+      amount:
+        name: amount
+        type: decimal
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        notNull: false
+      date:
+        name: date
+        type: date
+        notNull: false
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      import_id:
+        name: import_id
+        type: uuid
+        notNull: false
+      notes:
+        name: notes
+        type: text
+        notNull: false
+      excluded:
+        name: excluded
+        type: boolean
+        default: false
+        notNull: false
+      plaid_id:
+        name: plaid_id
+        type: varchar
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_entries_account_id:
+        type: FOREIGN KEY
+        name: fk_entries_account_id
+        columnNames:
+          - account_id
+        targetTableName: accounts
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_entries_import_id:
+        type: FOREIGN KEY
+        name: fk_entries_import_id
+        columnNames:
+          - import_id
+        targetTableName: imports
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  exchange_rates:
+    name: exchange_rates
+    indexes:
+      index_exchange_rates_on_base_converted_date_unique:
+        name: index_exchange_rates_on_base_converted_date_unique
+        unique: true
+        columns:
+          - from_currency
+          - to_currency
+          - date
+        type: ""
+      index_exchange_rates_on_from_currency:
+        name: index_exchange_rates_on_from_currency
+        unique: false
+        columns:
+          - from_currency
+        type: ""
+      index_exchange_rates_on_to_currency:
+        name: index_exchange_rates_on_to_currency
+        unique: false
+        columns:
+          - to_currency
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      from_currency:
+        name: from_currency
+        type: varchar
+        notNull: true
+      to_currency:
+        name: to_currency
+        type: varchar
+        notNull: true
+      rate:
+        name: rate
+        type: decimal
+        notNull: true
+      date:
+        name: date
+        type: date
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_from_currency_to_currency_date:
+        type: UNIQUE
+        name: UNIQUE_from_currency_to_currency_date
+        columnNames:
+          - from_currency
+          - to_currency
+          - date
+  families:
+    name: families
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        default: USD
+        notNull: false
+      locale:
+        name: locale
+        type: varchar
+        default: en
+        notNull: false
+      stripe_customer_id:
+        name: stripe_customer_id
+        type: varchar
+        notNull: false
+      date_format:
+        name: date_format
+        type: varchar
+        default: "%m-%d-%Y"
+        notNull: false
+      country:
+        name: country
+        type: varchar
+        default: US
+        notNull: false
+      timezone:
+        name: timezone
+        type: varchar
+        notNull: false
+      data_enrichment_enabled:
+        name: data_enrichment_enabled
+        type: boolean
+        default: false
+        notNull: false
+      early_access:
+        name: early_access
+        type: boolean
+        default: false
+        notNull: false
+      auto_sync_on_login:
+        name: auto_sync_on_login
+        type: boolean
+        default: true
+        notNull: true
+      latest_sync_activity_at:
+        name: latest_sync_activity_at
+        type: timestamp
+        notNull: false
+      latest_sync_completed_at:
+        name: latest_sync_completed_at
+        type: timestamp
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  family_exports:
+    name: family_exports
+    indexes:
+      index_family_exports_on_family_id:
+        name: index_family_exports_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      status:
+        name: status
+        type: varchar
+        default: pending
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_family_exports_family_id:
+        type: FOREIGN KEY
+        name: fk_family_exports_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  holdings:
+    name: holdings
+    indexes:
+      idx_on_account_id_security_id_date_currency_5323e39f8b:
+        name: idx_on_account_id_security_id_date_currency_5323e39f8b
+        unique: true
+        columns:
+          - account_id
+          - security_id
+          - date
+          - currency
+        type: ""
+      index_holdings_on_account_id:
+        name: index_holdings_on_account_id
+        unique: false
+        columns:
+          - account_id
+        type: ""
+      index_holdings_on_security_id:
+        name: index_holdings_on_security_id
+        unique: false
+        columns:
+          - security_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      account_id:
+        name: account_id
+        type: uuid
+        notNull: true
+      security_id:
+        name: security_id
+        type: uuid
+        notNull: true
+      date:
+        name: date
+        type: date
+        notNull: true
+      qty:
+        name: qty
+        type: decimal
+        notNull: true
+      price:
+        name: price
+        type: decimal
+        notNull: true
+      amount:
+        name: amount
+        type: decimal
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_account_id_security_id_date_currency:
+        type: UNIQUE
+        name: UNIQUE_account_id_security_id_date_currency
+        columnNames:
+          - account_id
+          - security_id
+          - date
+          - currency
+      fk_holdings_account_id:
+        type: FOREIGN KEY
+        name: fk_holdings_account_id
+        columnNames:
+          - account_id
+        targetTableName: accounts
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_holdings_security_id:
+        type: FOREIGN KEY
+        name: fk_holdings_security_id
+        columnNames:
+          - security_id
+        targetTableName: securities
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  impersonation_session_logs:
+    name: impersonation_session_logs
+    indexes:
+      index_impersonation_session_logs_on_impersonation_session_id:
+        name: index_impersonation_session_logs_on_impersonation_session_id
+        unique: false
+        columns:
+          - impersonation_session_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      impersonation_session_id:
+        name: impersonation_session_id
+        type: uuid
+        notNull: true
+      controller:
+        name: controller
+        type: varchar
+        notNull: false
+      action:
+        name: action
+        type: varchar
+        notNull: false
+      path:
+        name: path
+        type: text
+        notNull: false
+      method:
+        name: method
+        type: varchar
+        notNull: false
+      ip_address:
+        name: ip_address
+        type: varchar
+        notNull: false
+      user_agent:
+        name: user_agent
+        type: text
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_impersonation_session_logs_impersonation_session_id:
+        type: FOREIGN KEY
+        name: fk_impersonation_session_logs_impersonation_session_id
+        columnNames:
+          - impersonation_session_id
+        targetTableName: impersonation_sessions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  impersonation_sessions:
+    name: impersonation_sessions
+    indexes:
+      index_impersonation_sessions_on_impersonated_id:
+        name: index_impersonation_sessions_on_impersonated_id
+        unique: false
+        columns:
+          - impersonated_id
+        type: ""
+      index_impersonation_sessions_on_impersonator_id:
+        name: index_impersonation_sessions_on_impersonator_id
+        unique: false
+        columns:
+          - impersonator_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      impersonator_id:
+        name: impersonator_id
+        type: uuid
+        notNull: true
+      impersonated_id:
+        name: impersonated_id
+        type: uuid
+        notNull: true
+      status:
+        name: status
+        type: varchar
+        default: pending
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_impersonation_sessions_impersonated_id:
+        type: FOREIGN KEY
+        name: fk_impersonation_sessions_impersonated_id
+        columnNames:
+          - impersonated_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_impersonation_sessions_impersonator_id:
+        type: FOREIGN KEY
+        name: fk_impersonation_sessions_impersonator_id
+        columnNames:
+          - impersonator_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  import_mappings:
+    name: import_mappings
+    indexes:
+      index_import_mappings_on_import_id:
+        name: index_import_mappings_on_import_id
+        unique: false
+        columns:
+          - import_id
+        type: ""
+      index_import_mappings_on_mappable:
+        name: index_import_mappings_on_mappable
+        unique: false
+        columns:
+          - mappable_type
+          - mappable_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      type:
+        name: type
+        type: varchar
+        notNull: true
+      key:
+        name: key
+        type: varchar
+        notNull: false
+      value:
+        name: value
+        type: varchar
+        notNull: false
+      create_when_empty:
+        name: create_when_empty
+        type: boolean
+        default: true
+        notNull: false
+      import_id:
+        name: import_id
+        type: uuid
+        notNull: true
+      mappable_type:
+        name: mappable_type
+        type: varchar
+        notNull: false
+      mappable_id:
+        name: mappable_id
+        type: uuid
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  import_rows:
+    name: import_rows
+    indexes:
+      index_import_rows_on_import_id:
+        name: index_import_rows_on_import_id
+        unique: false
+        columns:
+          - import_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      import_id:
+        name: import_id
+        type: uuid
+        notNull: true
+      account:
+        name: account
+        type: varchar
+        notNull: false
+      date:
+        name: date
+        type: varchar
+        notNull: false
+      qty:
+        name: qty
+        type: varchar
+        notNull: false
+      ticker:
+        name: ticker
+        type: varchar
+        notNull: false
+      price:
+        name: price
+        type: varchar
+        notNull: false
+      amount:
+        name: amount
+        type: varchar
+        notNull: false
+      currency:
+        name: currency
+        type: varchar
+        notNull: false
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      category:
+        name: category
+        type: varchar
+        notNull: false
+      tags:
+        name: tags
+        type: varchar
+        notNull: false
+      entity_type:
+        name: entity_type
+        type: varchar
+        notNull: false
+      notes:
+        name: notes
+        type: text
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      exchange_operating_mic:
+        name: exchange_operating_mic
+        type: varchar
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_import_rows_import_id:
+        type: FOREIGN KEY
+        name: fk_import_rows_import_id
+        columnNames:
+          - import_id
+        targetTableName: imports
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  imports:
+    name: imports
+    indexes:
+      index_imports_on_family_id:
+        name: index_imports_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      column_mappings:
+        name: column_mappings
+        type: jsonb
+        notNull: false
+      status:
+        name: status
+        type: varchar
+        notNull: false
+      raw_file_str:
+        name: raw_file_str
+        type: varchar
+        notNull: false
+      normalized_csv_str:
+        name: normalized_csv_str
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      col_sep:
+        name: col_sep
+        type: varchar
+        default: ","
+        notNull: false
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      account_id:
+        name: account_id
+        type: uuid
+        notNull: false
+      type:
+        name: type
+        type: varchar
+        notNull: true
+      date_col_label:
+        name: date_col_label
+        type: varchar
+        notNull: false
+      amount_col_label:
+        name: amount_col_label
+        type: varchar
+        notNull: false
+      name_col_label:
+        name: name_col_label
+        type: varchar
+        notNull: false
+      category_col_label:
+        name: category_col_label
+        type: varchar
+        notNull: false
+      tags_col_label:
+        name: tags_col_label
+        type: varchar
+        notNull: false
+      account_col_label:
+        name: account_col_label
+        type: varchar
+        notNull: false
+      qty_col_label:
+        name: qty_col_label
+        type: varchar
+        notNull: false
+      ticker_col_label:
+        name: ticker_col_label
+        type: varchar
+        notNull: false
+      price_col_label:
+        name: price_col_label
+        type: varchar
+        notNull: false
+      entity_type_col_label:
+        name: entity_type_col_label
+        type: varchar
+        notNull: false
+      notes_col_label:
+        name: notes_col_label
+        type: varchar
+        notNull: false
+      currency_col_label:
+        name: currency_col_label
+        type: varchar
+        notNull: false
+      date_format:
+        name: date_format
+        type: varchar
+        default: "%m/%d/%Y"
+        notNull: false
+      signage_convention:
+        name: signage_convention
+        type: varchar
+        default: inflows_positive
+        notNull: false
+      error:
+        name: error
+        type: varchar
+        notNull: false
+      number_format:
+        name: number_format
+        type: varchar
+        notNull: false
+      exchange_operating_mic_col_label:
+        name: exchange_operating_mic_col_label
+        type: varchar
+        notNull: false
+      amount_type_strategy:
+        name: amount_type_strategy
+        type: varchar
+        default: signed_amount
+        notNull: false
+      amount_type_inflow_value:
+        name: amount_type_inflow_value
+        type: varchar
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_imports_family_id:
+        type: FOREIGN KEY
+        name: fk_imports_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  investments:
+    name: investments
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  invitations:
+    name: invitations
+    indexes:
+      index_invitations_on_email_and_family_id:
+        name: index_invitations_on_email_and_family_id
+        unique: true
+        columns:
+          - email
+          - family_id
+        type: ""
+      index_invitations_on_email:
+        name: index_invitations_on_email
+        unique: false
+        columns:
+          - email
+        type: ""
+      index_invitations_on_family_id:
+        name: index_invitations_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+      index_invitations_on_inviter_id:
+        name: index_invitations_on_inviter_id
+        unique: false
+        columns:
+          - inviter_id
+        type: ""
+      index_invitations_on_token:
+        name: index_invitations_on_token
+        unique: true
+        columns:
+          - token
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      email:
+        name: email
+        type: varchar
+        notNull: false
+      role:
+        name: role
+        type: varchar
+        notNull: false
+      token:
+        name: token
+        type: varchar
+        notNull: false
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      inviter_id:
+        name: inviter_id
+        type: uuid
+        notNull: true
+      accepted_at:
+        name: accepted_at
+        type: timestamp
+        notNull: false
+      expires_at:
+        name: expires_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_email_family_id:
+        type: UNIQUE
+        name: UNIQUE_email_family_id
+        columnNames:
+          - email
+          - family_id
+      UNIQUE_token:
+        type: UNIQUE
+        name: UNIQUE_token
+        columnNames:
+          - token
+      fk_invitations_family_id:
+        type: FOREIGN KEY
+        name: fk_invitations_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_invitations_inviter_id:
+        type: FOREIGN KEY
+        name: fk_invitations_inviter_id
+        columnNames:
+          - inviter_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  invite_codes:
+    name: invite_codes
+    indexes:
+      index_invite_codes_on_token:
+        name: index_invite_codes_on_token
+        unique: true
+        columns:
+          - token
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      token:
+        name: token
+        type: varchar
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_token:
+        type: UNIQUE
+        name: UNIQUE_token
+        columnNames:
+          - token
+  loans:
+    name: loans
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      rate_type:
+        name: rate_type
+        type: varchar
+        notNull: false
+      interest_rate:
+        name: interest_rate
+        type: decimal
+        notNull: false
+      term_months:
+        name: term_months
+        type: integer
+        notNull: false
+      initial_balance:
+        name: initial_balance
+        type: decimal
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  merchants:
+    name: merchants
+    indexes:
+      index_merchants_on_family_id_and_name:
+        name: index_merchants_on_family_id_and_name
+        unique: true
+        columns:
+          - family_id
+          - name
+        type: ""
+      index_merchants_on_family_id:
+        name: index_merchants_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+      index_merchants_on_source_and_name:
+        name: index_merchants_on_source_and_name
+        unique: true
+        columns:
+          - source
+          - name
+        type: ""
+      index_merchants_on_type:
+        name: index_merchants_on_type
+        unique: false
+        columns:
+          - type
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      color:
+        name: color
+        type: varchar
+        notNull: false
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      logo_url:
+        name: logo_url
+        type: varchar
+        notNull: false
+      website_url:
+        name: website_url
+        type: varchar
+        notNull: false
+      type:
+        name: type
+        type: varchar
+        notNull: true
+      source:
+        name: source
+        type: varchar
+        notNull: false
+      provider_merchant_id:
+        name: provider_merchant_id
+        type: varchar
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_family_id_name:
+        type: UNIQUE
+        name: UNIQUE_family_id_name
+        columnNames:
+          - family_id
+          - name
+      UNIQUE_source_name:
+        type: UNIQUE
+        name: UNIQUE_source_name
+        columnNames:
+          - source
+          - name
+      fk_merchants_family_id:
+        type: FOREIGN KEY
+        name: fk_merchants_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  messages:
+    name: messages
+    indexes:
+      index_messages_on_chat_id:
+        name: index_messages_on_chat_id
+        unique: false
+        columns:
+          - chat_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      chat_id:
+        name: chat_id
+        type: uuid
+        notNull: true
+      type:
+        name: type
+        type: varchar
+        notNull: true
+      status:
+        name: status
+        type: varchar
+        default: complete
+        notNull: true
+      content:
+        name: content
+        type: text
+        notNull: false
+      ai_model:
+        name: ai_model
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      debug:
+        name: debug
+        type: boolean
+        default: false
+        notNull: false
+      provider_id:
+        name: provider_id
+        type: varchar
+        notNull: false
+      reasoning:
+        name: reasoning
+        type: boolean
+        default: false
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_messages_chat_id:
+        type: FOREIGN KEY
+        name: fk_messages_chat_id
+        columnNames:
+          - chat_id
+        targetTableName: chats
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  mobile_devices:
+    name: mobile_devices
+    indexes:
+      index_mobile_devices_on_oauth_application_id:
+        name: index_mobile_devices_on_oauth_application_id
+        unique: false
+        columns:
+          - oauth_application_id
+        type: ""
+      index_mobile_devices_on_user_id_and_device_id:
+        name: index_mobile_devices_on_user_id_and_device_id
+        unique: true
+        columns:
+          - user_id
+          - device_id
+        type: ""
+      index_mobile_devices_on_user_id:
+        name: index_mobile_devices_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      user_id:
+        name: user_id
+        type: uuid
+        notNull: true
+      device_id:
+        name: device_id
+        type: varchar
+        notNull: false
+      device_name:
+        name: device_name
+        type: varchar
+        notNull: false
+      device_type:
+        name: device_type
+        type: varchar
+        notNull: false
+      os_version:
+        name: os_version
+        type: varchar
+        notNull: false
+      app_version:
+        name: app_version
+        type: varchar
+        notNull: false
+      last_seen_at:
+        name: last_seen_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      oauth_application_id:
+        name: oauth_application_id
+        type: integer
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_user_id_device_id:
+        type: UNIQUE
+        name: UNIQUE_user_id_device_id
+        columnNames:
+          - user_id
+          - device_id
+      fk_mobile_devices_user_id:
+        type: FOREIGN KEY
+        name: fk_mobile_devices_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  oauth_access_grants:
+    name: oauth_access_grants
+    indexes:
+      index_oauth_access_grants_on_application_id:
+        name: index_oauth_access_grants_on_application_id
+        unique: false
+        columns:
+          - application_id
+        type: ""
+      index_oauth_access_grants_on_resource_owner_id:
+        name: index_oauth_access_grants_on_resource_owner_id
+        unique: false
+        columns:
+          - resource_owner_id
+        type: ""
+      index_oauth_access_grants_on_token:
+        name: index_oauth_access_grants_on_token
+        unique: true
+        columns:
+          - token
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      resource_owner_id:
+        name: resource_owner_id
+        type: varchar
+        notNull: true
+      application_id:
+        name: application_id
+        type: bigint
+        notNull: true
+      token:
+        name: token
+        type: varchar
+        notNull: true
+      expires_in:
+        name: expires_in
+        type: integer
+        notNull: true
+      redirect_uri:
+        name: redirect_uri
+        type: text
+        notNull: true
+      scopes:
+        name: scopes
+        type: varchar
+        default: ""
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      revoked_at:
+        name: revoked_at
+        type: timestamp
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_token:
+        type: UNIQUE
+        name: UNIQUE_token
+        columnNames:
+          - token
+      fk_oauth_access_grants_application_id:
+        type: FOREIGN KEY
+        name: fk_oauth_access_grants_application_id
+        columnNames:
+          - application_id
+        targetTableName: oauth_applications
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  oauth_access_tokens:
+    name: oauth_access_tokens
+    indexes:
+      index_oauth_access_tokens_on_application_id:
+        name: index_oauth_access_tokens_on_application_id
+        unique: false
+        columns:
+          - application_id
+        type: ""
+      index_oauth_access_tokens_on_refresh_token:
+        name: index_oauth_access_tokens_on_refresh_token
+        unique: true
+        columns:
+          - refresh_token
+        type: ""
+      index_oauth_access_tokens_on_resource_owner_id:
+        name: index_oauth_access_tokens_on_resource_owner_id
+        unique: false
+        columns:
+          - resource_owner_id
+        type: ""
+      index_oauth_access_tokens_on_token:
+        name: index_oauth_access_tokens_on_token
+        unique: true
+        columns:
+          - token
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      resource_owner_id:
+        name: resource_owner_id
+        type: varchar
+        notNull: false
+      application_id:
+        name: application_id
+        type: bigint
+        notNull: true
+      token:
+        name: token
+        type: varchar
+        notNull: true
+      refresh_token:
+        name: refresh_token
+        type: varchar
+        notNull: false
+      expires_in:
+        name: expires_in
+        type: integer
+        notNull: false
+      scopes:
+        name: scopes
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      revoked_at:
+        name: revoked_at
+        type: timestamp
+        notNull: false
+      previous_refresh_token:
+        name: previous_refresh_token
+        type: varchar
+        default: ""
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_refresh_token:
+        type: UNIQUE
+        name: UNIQUE_refresh_token
+        columnNames:
+          - refresh_token
+      UNIQUE_token:
+        type: UNIQUE
+        name: UNIQUE_token
+        columnNames:
+          - token
+      fk_oauth_access_tokens_application_id:
+        type: FOREIGN KEY
+        name: fk_oauth_access_tokens_application_id
+        columnNames:
+          - application_id
+        targetTableName: oauth_applications
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  oauth_applications:
+    name: oauth_applications
+    indexes:
+      index_oauth_applications_on_owner_id_and_owner_type:
+        name: index_oauth_applications_on_owner_id_and_owner_type
+        unique: false
+        columns:
+          - owner_id
+          - owner_type
+        type: ""
+      index_oauth_applications_on_uid:
+        name: index_oauth_applications_on_uid
+        unique: true
+        columns:
+          - uid
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      uid:
+        name: uid
+        type: varchar
+        notNull: true
+      secret:
+        name: secret
+        type: varchar
+        notNull: true
+      redirect_uri:
+        name: redirect_uri
+        type: text
+        notNull: true
+      scopes:
+        name: scopes
+        type: varchar
+        default: ""
+        notNull: true
+      confidential:
+        name: confidential
+        type: boolean
+        default: true
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      owner_id:
+        name: owner_id
+        type: uuid
+        notNull: false
+      owner_type:
+        name: owner_type
+        type: varchar
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_uid:
+        type: UNIQUE
+        name: UNIQUE_uid
+        columnNames:
+          - uid
+  other_assets:
+    name: other_assets
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  other_liabilities:
+    name: other_liabilities
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  plaid_accounts:
+    name: plaid_accounts
+    indexes:
+      index_plaid_accounts_on_plaid_id:
+        name: index_plaid_accounts_on_plaid_id
+        unique: true
+        columns:
+          - plaid_id
+        type: ""
+      index_plaid_accounts_on_plaid_item_id:
+        name: index_plaid_accounts_on_plaid_item_id
+        unique: false
+        columns:
+          - plaid_item_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      plaid_item_id:
+        name: plaid_item_id
+        type: uuid
+        notNull: true
+      plaid_id:
+        name: plaid_id
+        type: varchar
+        notNull: true
+      plaid_type:
+        name: plaid_type
+        type: varchar
+        notNull: true
+      plaid_subtype:
+        name: plaid_subtype
+        type: varchar
+        notNull: false
+      current_balance:
+        name: current_balance
+        type: decimal
+        notNull: false
+      available_balance:
+        name: available_balance
+        type: decimal
+        notNull: false
+      currency:
+        name: currency
+        type: varchar
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: true
+      mask:
+        name: mask
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      raw_payload:
+        name: raw_payload
+        type: jsonb
+        notNull: false
+      raw_transactions_payload:
+        name: raw_transactions_payload
+        type: jsonb
+        notNull: false
+      raw_investments_payload:
+        name: raw_investments_payload
+        type: jsonb
+        notNull: false
+      raw_liabilities_payload:
+        name: raw_liabilities_payload
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_plaid_id:
+        type: UNIQUE
+        name: UNIQUE_plaid_id
+        columnNames:
+          - plaid_id
+      fk_plaid_accounts_plaid_item_id:
+        type: FOREIGN KEY
+        name: fk_plaid_accounts_plaid_item_id
+        columnNames:
+          - plaid_item_id
+        targetTableName: plaid_items
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  plaid_items:
+    name: plaid_items
+    indexes:
+      index_plaid_items_on_family_id:
+        name: index_plaid_items_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+      index_plaid_items_on_plaid_id:
+        name: index_plaid_items_on_plaid_id
+        unique: true
+        columns:
+          - plaid_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      access_token:
+        name: access_token
+        type: varchar
+        notNull: false
+      plaid_id:
+        name: plaid_id
+        type: varchar
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      next_cursor:
+        name: next_cursor
+        type: varchar
+        notNull: false
+      scheduled_for_deletion:
+        name: scheduled_for_deletion
+        type: boolean
+        default: false
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      available_products:
+        name: available_products
+        type: varchar
+        notNull: false
+      billed_products:
+        name: billed_products
+        type: varchar
+        notNull: false
+      plaid_region:
+        name: plaid_region
+        type: varchar
+        default: us
+        notNull: true
+      institution_url:
+        name: institution_url
+        type: varchar
+        notNull: false
+      institution_id:
+        name: institution_id
+        type: varchar
+        notNull: false
+      institution_color:
+        name: institution_color
+        type: varchar
+        notNull: false
+      status:
+        name: status
+        type: varchar
+        default: good
+        notNull: true
+      raw_payload:
+        name: raw_payload
+        type: jsonb
+        notNull: false
+      raw_institution_payload:
+        name: raw_institution_payload
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_plaid_id:
+        type: UNIQUE
+        name: UNIQUE_plaid_id
+        columnNames:
+          - plaid_id
+      fk_plaid_items_family_id:
+        type: FOREIGN KEY
+        name: fk_plaid_items_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  properties:
+    name: properties
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      year_built:
+        name: year_built
+        type: integer
+        notNull: false
+      area_value:
+        name: area_value
+        type: integer
+        notNull: false
+      area_unit:
+        name: area_unit
+        type: varchar
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  rejected_transfers:
+    name: rejected_transfers
+    indexes:
+      idx_on_inflow_transaction_id_outflow_transaction_id_412f8e7e26:
+        name: idx_on_inflow_transaction_id_outflow_transaction_id_412f8e7e26
+        unique: true
+        columns:
+          - inflow_transaction_id
+          - outflow_transaction_id
+        type: ""
+      index_rejected_transfers_on_inflow_transaction_id:
+        name: index_rejected_transfers_on_inflow_transaction_id
+        unique: false
+        columns:
+          - inflow_transaction_id
+        type: ""
+      index_rejected_transfers_on_outflow_transaction_id:
+        name: index_rejected_transfers_on_outflow_transaction_id
+        unique: false
+        columns:
+          - outflow_transaction_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      inflow_transaction_id:
+        name: inflow_transaction_id
+        type: uuid
+        notNull: true
+      outflow_transaction_id:
+        name: outflow_transaction_id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_inflow_transaction_id_outflow_transaction_id:
+        type: UNIQUE
+        name: UNIQUE_inflow_transaction_id_outflow_transaction_id
+        columnNames:
+          - inflow_transaction_id
+          - outflow_transaction_id
+      fk_rejected_transfers_inflow_transaction_id:
+        type: FOREIGN KEY
+        name: fk_rejected_transfers_inflow_transaction_id
+        columnNames:
+          - inflow_transaction_id
+        targetTableName: transactions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_rejected_transfers_outflow_transaction_id:
+        type: FOREIGN KEY
+        name: fk_rejected_transfers_outflow_transaction_id
+        columnNames:
+          - outflow_transaction_id
+        targetTableName: transactions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  rule_actions:
+    name: rule_actions
+    indexes:
+      index_rule_actions_on_rule_id:
+        name: index_rule_actions_on_rule_id
+        unique: false
+        columns:
+          - rule_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      rule_id:
+        name: rule_id
+        type: uuid
+        notNull: true
+      action_type:
+        name: action_type
+        type: varchar
+        notNull: true
+      value:
+        name: value
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_rule_actions_rule_id:
+        type: FOREIGN KEY
+        name: fk_rule_actions_rule_id
+        columnNames:
+          - rule_id
+        targetTableName: rules
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  rule_conditions:
+    name: rule_conditions
+    indexes:
+      index_rule_conditions_on_parent_id:
+        name: index_rule_conditions_on_parent_id
+        unique: false
+        columns:
+          - parent_id
+        type: ""
+      index_rule_conditions_on_rule_id:
+        name: index_rule_conditions_on_rule_id
+        unique: false
+        columns:
+          - rule_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      rule_id:
+        name: rule_id
+        type: uuid
+        notNull: false
+      parent_id:
+        name: parent_id
+        type: uuid
+        notNull: false
+      condition_type:
+        name: condition_type
+        type: varchar
+        notNull: true
+      operator:
+        name: operator
+        type: varchar
+        notNull: true
+      value:
+        name: value
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_rule_conditions_parent_id:
+        type: FOREIGN KEY
+        name: fk_rule_conditions_parent_id
+        columnNames:
+          - parent_id
+        targetTableName: rule_conditions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_rule_conditions_rule_id:
+        type: FOREIGN KEY
+        name: fk_rule_conditions_rule_id
+        columnNames:
+          - rule_id
+        targetTableName: rules
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  rules:
+    name: rules
+    indexes:
+      index_rules_on_family_id:
+        name: index_rules_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      resource_type:
+        name: resource_type
+        type: varchar
+        notNull: true
+      effective_date:
+        name: effective_date
+        type: date
+        notNull: false
+      active:
+        name: active
+        type: boolean
+        default: false
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_rules_family_id:
+        type: FOREIGN KEY
+        name: fk_rules_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  securities:
+    name: securities
+    indexes:
+      index_securities_on_ticker_and_exchange_operating_mic_unique:
+        name: index_securities_on_ticker_and_exchange_operating_mic_unique
+        unique: true
+        columns: []
+        type: ""
+      index_securities_on_country_code:
+        name: index_securities_on_country_code
+        unique: false
+        columns:
+          - country_code
+        type: ""
+      index_securities_on_exchange_operating_mic:
+        name: index_securities_on_exchange_operating_mic
+        unique: false
+        columns:
+          - exchange_operating_mic
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      ticker:
+        name: ticker
+        type: varchar
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      country_code:
+        name: country_code
+        type: varchar
+        notNull: false
+      exchange_mic:
+        name: exchange_mic
+        type: varchar
+        notNull: false
+      exchange_acronym:
+        name: exchange_acronym
+        type: varchar
+        notNull: false
+      logo_url:
+        name: logo_url
+        type: varchar
+        notNull: false
+      exchange_operating_mic:
+        name: exchange_operating_mic
+        type: varchar
+        notNull: false
+      offline:
+        name: offline
+        type: boolean
+        default: false
+        notNull: true
+      failed_fetch_at:
+        name: failed_fetch_at
+        type: timestamp
+        notNull: false
+      failed_fetch_count:
+        name: failed_fetch_count
+        type: integer
+        default: 0
+        notNull: true
+      last_health_check_at:
+        name: last_health_check_at
+        type: timestamp
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  security_prices:
+    name: security_prices
+    indexes:
+      index_security_prices_on_security_id_and_date_and_currency:
+        name: index_security_prices_on_security_id_and_date_and_currency
+        unique: true
+        columns:
+          - security_id
+          - date
+          - currency
+        type: ""
+      index_security_prices_on_security_id:
+        name: index_security_prices_on_security_id
+        unique: false
+        columns:
+          - security_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      date:
+        name: date
+        type: date
+        notNull: true
+      price:
+        name: price
+        type: decimal
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        default: USD
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      security_id:
+        name: security_id
+        type: uuid
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_security_id_date_currency:
+        type: UNIQUE
+        name: UNIQUE_security_id_date_currency
+        columnNames:
+          - security_id
+          - date
+          - currency
+      fk_security_prices_security_id:
+        type: FOREIGN KEY
+        name: fk_security_prices_security_id
+        columnNames:
+          - security_id
+        targetTableName: securities
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  sessions:
+    name: sessions
+    indexes:
+      index_sessions_on_active_impersonator_session_id:
+        name: index_sessions_on_active_impersonator_session_id
+        unique: false
+        columns:
+          - active_impersonator_session_id
+        type: ""
+      index_sessions_on_user_id:
+        name: index_sessions_on_user_id
+        unique: false
+        columns:
+          - user_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      user_id:
+        name: user_id
+        type: uuid
+        notNull: true
+      user_agent:
+        name: user_agent
+        type: varchar
+        notNull: false
+      ip_address:
+        name: ip_address
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      active_impersonator_session_id:
+        name: active_impersonator_session_id
+        type: uuid
+        notNull: false
+      subscribed_at:
+        name: subscribed_at
+        type: timestamp
+        notNull: false
+      prev_transaction_page_params:
+        name: prev_transaction_page_params
+        type: jsonb
+        notNull: false
+      data:
+        name: data
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_sessions_active_impersonator_session_id:
+        type: FOREIGN KEY
+        name: fk_sessions_active_impersonator_session_id
+        columnNames:
+          - active_impersonator_session_id
+        targetTableName: impersonation_sessions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_sessions_user_id:
+        type: FOREIGN KEY
+        name: fk_sessions_user_id
+        columnNames:
+          - user_id
+        targetTableName: users
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  settings:
+    name: settings
+    indexes:
+      index_settings_on_var:
+        name: index_settings_on_var
+        unique: true
+        columns:
+          - var
+        type: ""
+    columns:
+      id:
+        name: id
+        type: bigserial
+        notNull: true
+      var:
+        name: var
+        type: varchar
+        notNull: true
+      value:
+        name: value
+        type: text
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_var:
+        type: UNIQUE
+        name: UNIQUE_var
+        columnNames:
+          - var
+  subscriptions:
+    name: subscriptions
+    indexes:
+      index_subscriptions_on_family_id:
+        name: index_subscriptions_on_family_id
+        unique: true
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      status:
+        name: status
+        type: varchar
+        notNull: true
+      stripe_id:
+        name: stripe_id
+        type: varchar
+        notNull: false
+      amount:
+        name: amount
+        type: decimal
+        notNull: false
+      currency:
+        name: currency
+        type: varchar
+        notNull: false
+      interval:
+        name: interval
+        type: varchar
+        notNull: false
+      current_period_ends_at:
+        name: current_period_ends_at
+        type: timestamp
+        notNull: false
+      trial_ends_at:
+        name: trial_ends_at
+        type: timestamp
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_family_id:
+        type: UNIQUE
+        name: UNIQUE_family_id
+        columnNames:
+          - family_id
+      fk_subscriptions_family_id:
+        type: FOREIGN KEY
+        name: fk_subscriptions_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  syncs:
+    name: syncs
+    indexes:
+      index_syncs_on_parent_id:
+        name: index_syncs_on_parent_id
+        unique: false
+        columns:
+          - parent_id
+        type: ""
+      index_syncs_on_status:
+        name: index_syncs_on_status
+        unique: false
+        columns:
+          - status
+        type: ""
+      index_syncs_on_syncable:
+        name: index_syncs_on_syncable
+        unique: false
+        columns:
+          - syncable_type
+          - syncable_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      syncable_type:
+        name: syncable_type
+        type: varchar
+        notNull: true
+      syncable_id:
+        name: syncable_id
+        type: uuid
+        notNull: true
+      status:
+        name: status
+        type: varchar
+        default: pending
+        notNull: false
+      error:
+        name: error
+        type: varchar
+        notNull: false
+      data:
+        name: data
+        type: jsonb
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      parent_id:
+        name: parent_id
+        type: uuid
+        notNull: false
+      pending_at:
+        name: pending_at
+        type: timestamp
+        notNull: false
+      syncing_at:
+        name: syncing_at
+        type: timestamp
+        notNull: false
+      completed_at:
+        name: completed_at
+        type: timestamp
+        notNull: false
+      failed_at:
+        name: failed_at
+        type: timestamp
+        notNull: false
+      window_start_date:
+        name: window_start_date
+        type: date
+        notNull: false
+      window_end_date:
+        name: window_end_date
+        type: date
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_syncs_parent_id:
+        type: FOREIGN KEY
+        name: fk_syncs_parent_id
+        columnNames:
+          - parent_id
+        targetTableName: syncs
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  taggings:
+    name: taggings
+    indexes:
+      index_taggings_on_tag_id:
+        name: index_taggings_on_tag_id
+        unique: false
+        columns:
+          - tag_id
+        type: ""
+      index_taggings_on_taggable:
+        name: index_taggings_on_taggable
+        unique: false
+        columns:
+          - taggable_type
+          - taggable_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      tag_id:
+        name: tag_id
+        type: uuid
+        notNull: true
+      taggable_type:
+        name: taggable_type
+        type: varchar
+        notNull: false
+      taggable_id:
+        name: taggable_id
+        type: uuid
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_taggings_tag_id:
+        type: FOREIGN KEY
+        name: fk_taggings_tag_id
+        columnNames:
+          - tag_id
+        targetTableName: tags
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  tags:
+    name: tags
+    indexes:
+      index_tags_on_family_id:
+        name: index_tags_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      name:
+        name: name
+        type: varchar
+        notNull: false
+      color:
+        name: color
+        type: varchar
+        default: "#e99537"
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_tags_family_id:
+        type: FOREIGN KEY
+        name: fk_tags_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  tool_calls:
+    name: tool_calls
+    indexes:
+      index_tool_calls_on_message_id:
+        name: index_tool_calls_on_message_id
+        unique: false
+        columns:
+          - message_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      message_id:
+        name: message_id
+        type: uuid
+        notNull: true
+      provider_id:
+        name: provider_id
+        type: varchar
+        notNull: true
+      provider_call_id:
+        name: provider_call_id
+        type: varchar
+        notNull: false
+      type:
+        name: type
+        type: varchar
+        notNull: true
+      function_name:
+        name: function_name
+        type: varchar
+        notNull: false
+      function_arguments:
+        name: function_arguments
+        type: jsonb
+        notNull: false
+      function_result:
+        name: function_result
+        type: jsonb
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_tool_calls_message_id:
+        type: FOREIGN KEY
+        name: fk_tool_calls_message_id
+        columnNames:
+          - message_id
+        targetTableName: messages
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  trades:
+    name: trades
+    indexes:
+      index_trades_on_security_id:
+        name: index_trades_on_security_id
+        unique: false
+        columns:
+          - security_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      security_id:
+        name: security_id
+        type: uuid
+        notNull: true
+      qty:
+        name: qty
+        type: decimal
+        notNull: false
+      price:
+        name: price
+        type: decimal
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      currency:
+        name: currency
+        type: varchar
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_trades_security_id:
+        type: FOREIGN KEY
+        name: fk_trades_security_id
+        columnNames:
+          - security_id
+        targetTableName: securities
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  transactions:
+    name: transactions
+    indexes:
+      index_transactions_on_category_id:
+        name: index_transactions_on_category_id
+        unique: false
+        columns:
+          - category_id
+        type: ""
+      index_transactions_on_kind:
+        name: index_transactions_on_kind
+        unique: false
+        columns:
+          - kind
+        type: ""
+      index_transactions_on_merchant_id:
+        name: index_transactions_on_merchant_id
+        unique: false
+        columns:
+          - merchant_id
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      category_id:
+        name: category_id
+        type: uuid
+        notNull: false
+      merchant_id:
+        name: merchant_id
+        type: uuid
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+      kind:
+        name: kind
+        type: varchar
+        default: standard
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      fk_transactions_category_id:
+        type: FOREIGN KEY
+        name: fk_transactions_category_id
+        columnNames:
+          - category_id
+        targetTableName: categories
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: SET_NULL
+      fk_transactions_merchant_id:
+        type: FOREIGN KEY
+        name: fk_transactions_merchant_id
+        columnNames:
+          - merchant_id
+        targetTableName: merchants
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  transfers:
+    name: transfers
+    indexes:
+      idx_on_inflow_transaction_id_outflow_transaction_id_8cd07a28bd:
+        name: idx_on_inflow_transaction_id_outflow_transaction_id_8cd07a28bd
+        unique: true
+        columns:
+          - inflow_transaction_id
+          - outflow_transaction_id
+        type: ""
+      index_transfers_on_inflow_transaction_id:
+        name: index_transfers_on_inflow_transaction_id
+        unique: false
+        columns:
+          - inflow_transaction_id
+        type: ""
+      index_transfers_on_outflow_transaction_id:
+        name: index_transfers_on_outflow_transaction_id
+        unique: false
+        columns:
+          - outflow_transaction_id
+        type: ""
+      index_transfers_on_status:
+        name: index_transfers_on_status
+        unique: false
+        columns:
+          - status
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      inflow_transaction_id:
+        name: inflow_transaction_id
+        type: uuid
+        notNull: true
+      outflow_transaction_id:
+        name: outflow_transaction_id
+        type: uuid
+        notNull: true
+      status:
+        name: status
+        type: varchar
+        default: pending
+        notNull: true
+      notes:
+        name: notes
+        type: text
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_inflow_transaction_id_outflow_transaction_id:
+        type: UNIQUE
+        name: UNIQUE_inflow_transaction_id_outflow_transaction_id
+        columnNames:
+          - inflow_transaction_id
+          - outflow_transaction_id
+      fk_transfers_inflow_transaction_id:
+        type: FOREIGN KEY
+        name: fk_transfers_inflow_transaction_id
+        columnNames:
+          - inflow_transaction_id
+        targetTableName: transactions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: CASCADE
+      fk_transfers_outflow_transaction_id:
+        type: FOREIGN KEY
+        name: fk_transfers_outflow_transaction_id
+        columnNames:
+          - outflow_transaction_id
+        targetTableName: transactions
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: CASCADE
+  users:
+    name: users
+    indexes:
+      index_users_on_email:
+        name: index_users_on_email
+        unique: true
+        columns:
+          - email
+        type: ""
+      index_users_on_family_id:
+        name: index_users_on_family_id
+        unique: false
+        columns:
+          - family_id
+        type: ""
+      index_users_on_last_viewed_chat_id:
+        name: index_users_on_last_viewed_chat_id
+        unique: false
+        columns:
+          - last_viewed_chat_id
+        type: ""
+      index_users_on_otp_secret:
+        name: index_users_on_otp_secret
+        unique: true
+        columns:
+          - otp_secret
+        type: ""
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      family_id:
+        name: family_id
+        type: uuid
+        notNull: true
+      first_name:
+        name: first_name
+        type: varchar
+        notNull: false
+      last_name:
+        name: last_name
+        type: varchar
+        notNull: false
+      email:
+        name: email
+        type: varchar
+        notNull: false
+      password_digest:
+        name: password_digest
+        type: varchar
+        notNull: false
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      role:
+        name: role
+        type: varchar
+        default: member
+        notNull: true
+      active:
+        name: active
+        type: boolean
+        default: true
+        notNull: true
+      onboarded_at:
+        name: onboarded_at
+        type: timestamp
+        notNull: false
+      unconfirmed_email:
+        name: unconfirmed_email
+        type: varchar
+        notNull: false
+      otp_secret:
+        name: otp_secret
+        type: varchar
+        notNull: false
+      otp_required:
+        name: otp_required
+        type: boolean
+        default: false
+        notNull: true
+      otp_backup_codes:
+        name: otp_backup_codes
+        type: varchar
+        notNull: false
+      show_sidebar:
+        name: show_sidebar
+        type: boolean
+        default: true
+        notNull: false
+      default_period:
+        name: default_period
+        type: varchar
+        default: last_30_days
+        notNull: true
+      last_viewed_chat_id:
+        name: last_viewed_chat_id
+        type: uuid
+        notNull: false
+      show_ai_sidebar:
+        name: show_ai_sidebar
+        type: boolean
+        default: true
+        notNull: false
+      ai_enabled:
+        name: ai_enabled
+        type: boolean
+        default: false
+        notNull: true
+      theme:
+        name: theme
+        type: varchar
+        default: system
+        notNull: false
+      rule_prompts_disabled:
+        name: rule_prompts_disabled
+        type: boolean
+        default: false
+        notNull: false
+      rule_prompt_dismissed_at:
+        name: rule_prompt_dismissed_at
+        type: timestamp
+        notNull: false
+      goals:
+        name: goals
+        type: text
+        notNull: false
+      set_onboarding_preferences_at:
+        name: set_onboarding_preferences_at
+        type: timestamp
+        notNull: false
+      set_onboarding_goals_at:
+        name: set_onboarding_goals_at
+        type: timestamp
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+      UNIQUE_email:
+        type: UNIQUE
+        name: UNIQUE_email
+        columnNames:
+          - email
+      UNIQUE_otp_secret:
+        type: UNIQUE
+        name: UNIQUE_otp_secret
+        columnNames:
+          - otp_secret
+      fk_users_last_viewed_chat_id:
+        type: FOREIGN KEY
+        name: fk_users_last_viewed_chat_id
+        columnNames:
+          - last_viewed_chat_id
+        targetTableName: chats
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+      fk_users_family_id:
+        type: FOREIGN KEY
+        name: fk_users_family_id
+        columnNames:
+          - family_id
+        targetTableName: families
+        targetColumnNames:
+          - id
+        updateConstraint: NO_ACTION
+        deleteConstraint: NO_ACTION
+  valuations:
+    name: valuations
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+      kind:
+        name: kind
+        type: varchar
+        default: reconciliation
+        notNull: true
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+  vehicles:
+    name: vehicles
+    indexes: {}
+    columns:
+      id:
+        name: id
+        type: uuid
+        notNull: true
+      created_at:
+        name: created_at
+        type: timestamp
+        notNull: true
+      updated_at:
+        name: updated_at
+        type: timestamp
+        notNull: true
+      year:
+        name: year
+        type: integer
+        notNull: false
+      mileage_value:
+        name: mileage_value
+        type: integer
+        notNull: false
+      mileage_unit:
+        name: mileage_unit
+        type: varchar
+        notNull: false
+      make:
+        name: make
+        type: varchar
+        notNull: false
+      model:
+        name: model
+        type: varchar
+        notNull: false
+      locked_attributes:
+        name: locked_attributes
+        type: jsonb
+        notNull: false
+    constraints:
+      PRIMARY_id:
+        type: PRIMARY KEY
+        name: PRIMARY_id
+        columnNames:
+          - id
+enums: {}
+extensions: {}

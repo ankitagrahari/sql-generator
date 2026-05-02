@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  sql-generator:
+    build: .
+    image: sql-generator:latest
+    container_name: sql-generator
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount local erd/ folder so default schemas persist
+      - ./erd:/app/erd
+      # Mount uploads/ so user-uploaded ERDs persist across restarts
+      - ./uploads:/app/uploads
+    environment:
+      # Optional: pre-configure API keys so users don't have to type them in the UI
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      # Change this to a long random string in production
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY:-change-me-in-production}
+      - FLASK_DEBUG=false
+    restart: unless-stopped

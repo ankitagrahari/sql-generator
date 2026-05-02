@@ -1,0 +1,6 @@
+tables:
+  test_table:
+    columns:
+      id: {type: bigserial, notNull: true}
+    constraints:
+      pk: {type: PRIMARY KEY, columnNames: [id]}
