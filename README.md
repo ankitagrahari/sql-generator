@@ -1,6 +1,6 @@
 # SQL Generator — AI-Powered SQL from Plain English
 
-> Built by **[backendbrilliance](https://dynamicallyblunttech.com)** · EPAM
+> Built by **[backendbrilliance](https://dynamicallyblunttech.com)** 
 
 An interactive web application that converts natural language into SQL queries using your own database schema (ERD). Upload a YAML ERD, describe what you want in plain English, and get production-ready PostgreSQL instantly.
 
@@ -11,7 +11,6 @@ An interactive web application that converts natural language into SQL queries u
 | |                                                              |
 |---|--------------------------------------------------------------|
 | **Handle** | aagrahari                                                    |
-| **Organization** | EPAM                                                         |
 | **Website** | [dynamicallyblunttech.com](https://dynamicallyblunttech.com) |
 
 
