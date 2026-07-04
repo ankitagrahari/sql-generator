@@ -10,7 +10,7 @@ An interactive web application that converts natural language into SQL queries u
 
 | |                                                              |
 |---|--------------------------------------------------------------|
-| **Handle** | aagrahari                                                    |
+| **Handle** | backendbrilliance                                                    |
 | **Website** | [dynamicallyblunttech.com](https://dynamicallyblunttech.com) |
 
 
